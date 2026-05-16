@@ -28,7 +28,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-white dark:bg-zinc-950 text-zinc-600 dark:text-stone-300 border-t border-stone-200 dark:border-zinc-800">
+    <footer className="bg-[var(--footer-bg)] text-stone-700 dark:text-stone-200 border-t border-rose-200/50 dark:border-rose-800/30">
 
       {/* ——— Main footer body ——— */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">
@@ -38,16 +38,16 @@ export default function Footer() {
           <div className="lg:col-span-2 flex flex-col gap-4">
             {/* Wordmark */}
             <Link to="/" className="flex items-center gap-1 select-none w-fit cursor-pointer">
-              <span className="text-xl font-extrabold tracking-widest text-rose-400">
+              <span className="text-xl font-extrabold tracking-widest text-[#C98790]">
                 LA&nbsp;PORTA
               </span>
-              <span className="text-xl font-light tracking-widest text-zinc-900 dark:text-stone-50">
+              <span className="text-xl font-light tracking-widest text-stone-900 dark:text-white">
                 CAKE
               </span>
             </Link>
 
             {/* Tagline */}
-            <p className="text-zinc-400 dark:text-stone-400 text-sm leading-relaxed max-w-xs">
+            <p className="text-stone-500 dark:text-stone-400 text-sm leading-relaxed max-w-xs">
               Handcrafted cakes &amp; pastries, baked fresh every morning in
               Amman, Jordan. Order online — collect in&nbsp;store.
             </p>
@@ -61,7 +61,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-100 text-zinc-500 dark:bg-zinc-800 dark:text-stone-400 hover:bg-rose-500 hover:text-white transition-all duration-300 cursor-pointer"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-stone-500 dark:bg-white/10 dark:text-stone-300 hover:bg-[#C98790] hover:text-white transition-all duration-300 cursor-pointer"
                 >
                   <Icon className="h-4 w-4" strokeWidth={1.75} />
                 </a>
@@ -71,7 +71,7 @@ export default function Footer() {
 
           {/* ——— Quick links ——— */}
           <div className="flex flex-col gap-4">
-            <p className="text-zinc-800 dark:text-stone-50 text-xs font-bold uppercase tracking-widest">
+            <p className="text-stone-900 dark:text-white text-xs font-bold uppercase tracking-widest">
               Quick Links
             </p>
             <ul className="flex flex-col gap-2.5">
@@ -79,7 +79,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     to={link.to}
-                    className="text-zinc-500 dark:text-stone-400 text-sm hover:text-rose-400 transition-colors duration-200 cursor-pointer"
+                    className="text-stone-500 dark:text-stone-400 text-sm hover:text-[#C98790] transition-colors duration-200 cursor-pointer"
                   >
                     {link.label}
                   </Link>
@@ -90,20 +90,20 @@ export default function Footer() {
 
           {/* ——— Pickup info ——— */}
           <div className="flex flex-col gap-4">
-            <p className="text-zinc-800 dark:text-stone-50 text-xs font-bold uppercase tracking-widest">
+            <p className="text-stone-900 dark:text-white text-xs font-bold uppercase tracking-widest">
               Pickup Info
             </p>
 
             <div className="flex flex-col gap-3">
               <div className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 text-rose-400 mt-0.5 shrink-0" strokeWidth={1.75} />
-                <span className="text-zinc-500 dark:text-stone-400 text-sm leading-snug">
+                <MapPin className="h-4 w-4 text-[#C98790] mt-0.5 shrink-0" strokeWidth={1.75} />
+                <span className="text-stone-500 dark:text-stone-400 text-sm leading-snug">
                   Sweifieh, Amman<br />Jordan
                 </span>
               </div>
 
-              <div className="text-zinc-500 dark:text-stone-400 text-sm leading-snug pl-6">
-                <p className="font-medium text-zinc-700 dark:text-stone-300 mb-0.5">Hours</p>
+              <div className="text-stone-500 dark:text-stone-400 text-sm leading-snug pl-6">
+                <p className="font-medium text-stone-800 dark:text-stone-200 mb-0.5">Hours</p>
                 <p>Mon – Fri: 9 AM – 9 PM</p>
                 <p>Sat – Sun: 10 AM – 10 PM</p>
               </div>
@@ -112,7 +112,7 @@ export default function Footer() {
                 href="#" // TODO: Replace with real Google Maps link
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-rose-400 hover:text-rose-300 transition-colors duration-200 cursor-pointer"
+                className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#C98790] hover:text-[#D89AA3] transition-colors duration-200 cursor-pointer"
               >
                 Get Directions →
               </a>
@@ -123,8 +123,8 @@ export default function Footer() {
       </div>
 
       {/* ——— Bottom bar ——— */}
-      <div className="border-t border-stone-200 dark:border-zinc-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-400 dark:text-stone-500">
+      <div className="border-t border-rose-200/50 dark:border-rose-800/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500 dark:text-stone-400">
           <p>© {year} La Porta Cake. All rights reserved.</p>
           <p>Take-away boutique · Amman, Jordan · Pickup only</p>
         </div>

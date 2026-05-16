@@ -1,3 +1,11 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --footer-bg: #F3D8DC;
+}
+
+.dark {
+  --footer-bg: #4A2730;
+}
