@@ -32,15 +32,54 @@ This project is currently a frontend portfolio/demo project. It does not include
 
 ```text
 src/
-  components/   Reusable layout and UI components such as Navbar, Footer, CartSlideOver, ProductCard, and ThemeToggle
-  pages/        Route-level pages including HomePage, MenuPage, ProductDetailPage, CheckoutPage, and NotFoundPage
-  sections/     Homepage sections such as Hero, FeaturedProducts, HowItWorks, and Contact
-  context/      React Context providers for cart, cart drawer, and theme state
-  hooks/        Custom hooks for accessing cart, cart drawer, and theme contexts
-  data/         Menu item and category data used by the storefront
-  utils/        Shared utility helpers such as currency formatting
-public/         Static assets including favicons, icons, and logo files
+├── components/
+│   ├── layout/
+│   │   ├── Navbar.jsx
+│   │   ├── Footer.jsx
+│   │   └── CartSlideOver.jsx
+│   └── ui/
+│       ├── ProductCard.jsx
+│       ├── ThemeToggle.jsx
+│       └── ...
+│
+├── pages/
+│   ├── HomePage.jsx
+│   ├── MenuPage.jsx
+│   ├── ProductDetailPage.jsx
+│   ├── CheckoutPage.jsx
+│   └── NotFoundPage.jsx
+│
+├── sections/
+│   ├── Hero.jsx
+│   ├── FeaturedProducts.jsx
+│   ├── HowItWorks.jsx
+│   └── Contact.jsx
+│
+├── context/
+├── hooks/
+├── data/
+├── utils/
+├── App.jsx
+├── main.jsx
+└── index.css
+
+public/
+├── favicon.png
+├── apple-touch-icon.png
+├── icons.svg
+└── logo files
 ```
+
+Folder overview:
+
+- `src/components`: Reusable layout and UI components.
+- `src/pages`: Route-level pages used by React Router.
+- `src/sections`: Homepage sections such as the hero, featured products, process, and contact areas.
+- `src/context`: React Context providers for cart, cart drawer, and theme state.
+- `src/hooks`: Custom hooks for consuming shared context.
+- `src/data`: Menu items and category data used by the storefront.
+- `src/utils`: Shared utility helpers such as currency formatting.
+- `public`: Static assets such as favicons, icons, and logo files.
 
 ## Installation
 
