@@ -4,8 +4,9 @@ import { useCart } from "../hooks/useCart";
 import { formatCurrency } from "../utils/formatCurrency";
 import { ArrowLeft, AlertCircle, Info } from "lucide-react";
 
-// TODO: Replace with the actual WhatsApp business number before launch (e.g., "962700000000")
-const WHATSAPP_NUMBER = "962700000000";
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER?.trim() || "";
+const DEMO_WHATSAPP_NOTICE =
+  "Payment and WhatsApp details will be confirmed before production.";
 
 function getTodayLocalDate() {
   const today = new Date();
@@ -32,6 +33,7 @@ export default function CheckoutPage() {
   });
   
   const [errors, setErrors] = useState({});
+  const [demoNotice, setDemoNotice] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,6 +62,7 @@ export default function CheckoutPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (demoNotice) setDemoNotice("");
     // Clear error on type
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
@@ -139,10 +142,15 @@ export default function CheckoutPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (!validateForm()) return;
+
+    if (WHATSAPP_NUMBER) {
       const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${buildWhatsAppMessage()}`;
       window.open(waLink, '_blank', 'noopener,noreferrer');
+      return;
     }
+
+    setDemoNotice(DEMO_WHATSAPP_NOTICE);
   };
 
   return (
@@ -268,8 +276,7 @@ export default function CheckoutPage() {
                 <div className="bg-stone-50 dark:bg-zinc-950 p-4 rounded-xl flex items-start gap-3 transition-colors duration-300">
                   <Info className="w-5 h-5 text-zinc-500 shrink-0 mt-0.5" />
                   <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed transition-colors duration-300">
-                    Bank and wallet transfer details will be confirmed on WhatsApp once your order is received.
-                    {/* TODO: Add real bank account and wallet details here in the future if needed in UI */}
+                    Payment and WhatsApp details will be confirmed before production.
                   </p>
                 </div>
               </section>
@@ -346,13 +353,19 @@ export default function CheckoutPage() {
                 }
               </p>
 
+              {demoNotice && (
+                <p className="rounded-2xl border border-stone-100 bg-stone-50 px-4 py-3 text-center text-xs font-medium leading-relaxed text-zinc-600 transition-colors duration-300 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+                  {demoNotice}
+                </p>
+              )}
+
               {/* Submit CTA */}
               <button
                 form="checkout-form"
                 type="submit"
                 className="w-full py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-full font-bold shadow-lg hover:shadow-xl dark:hover:shadow-rose-900/30 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
-                Send Order on WhatsApp
+                Prepare WhatsApp Order
               </button>
 
             </div>

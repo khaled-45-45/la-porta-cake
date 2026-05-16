@@ -1,7 +1,6 @@
 import { MapPin, Phone, Clock, Camera, MessageCircle, Store } from "lucide-react";
 
-// ─── Contact data ─────────────────────────────────────────────────────────────
-// TODO: Replace placeholder href values with real links before going live.
+// Public demo contact data. Real contact and social links will be added before launch.
 
 const INFO_CARDS = [
   {
@@ -9,18 +8,16 @@ const INFO_CARDS = [
     icon: MapPin,
     title: "Our Location",
     lines: ["Sweifieh, Amman", "Jordan"],
-    // TODO: Replace with real Google Maps link
-    href: "#",
-    linkLabel: "Open in Maps",
+    href: null,
+    linkLabel: "Directions coming soon",
   },
   {
     id: "phone",
     icon: Phone,
     title: "Call or WhatsApp",
-    lines: ["+962 7X XXX XXXX"],
-    // TODO: Replace with real phone number
-    href: "tel:+962700000000",
-    linkLabel: "Call Us",
+    lines: ["Contact details coming soon"],
+    href: null,
+    linkLabel: null,
   },
   {
     id: "hours",
@@ -37,10 +34,9 @@ const INFO_CARDS = [
     id: "social",
     icon: Camera,
     title: "Follow Along",
-    lines: ["@laporta.cake"],
-    // TODO: Replace with real Instagram URL
-    href: "https://www.instagram.com/",
-    linkLabel: "@laporta.cake",
+    lines: ["Social links will be added before launch"],
+    href: null,
+    linkLabel: null,
   },
 ];
 
@@ -62,13 +58,12 @@ export default function Contact() {
             className="text-zinc-900 dark:text-stone-50 font-serif font-bold text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 transition-colors duration-300"
             style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
           >
-            Visit &amp; Pick Up
+            Pickup &amp; Delivery
           </h2>
 
           <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg max-w-xl mx-auto leading-relaxed transition-colors duration-300">
-            All orders are freshly prepared for in-store pickup. Place yours
-            online, then come collect at our Amman boutique — we&apos;ll have
-            it boxed and ready.
+            All orders are freshly prepared for scheduled pickup or local
+            delivery. Contact details will be added before launch.
           </p>
         </div>
 
@@ -82,7 +77,7 @@ export default function Contact() {
               return (
                 <div
                   key={card.id}
-                  className="bg-stone-50 dark:bg-zinc-900/80 border border-stone-100 dark:border-zinc-800 rounded-3xl p-6 flex flex-col gap-3 hover:shadow-md dark:hover:shadow-black/50 transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer"
+                  className="bg-stone-50 dark:bg-zinc-900/80 border border-stone-100 dark:border-zinc-800 rounded-3xl p-6 flex flex-col gap-3 hover:shadow-md dark:hover:shadow-black/50 transition-all duration-300 hover:-translate-y-0.5 group"
                 >
                   {/* Icon */}
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-rose-50 dark:bg-rose-500/10 ring-1 ring-rose-100 dark:ring-rose-500/30 group-hover:bg-rose-500 group-hover:ring-rose-500 transition-colors duration-300">
@@ -104,7 +99,7 @@ export default function Contact() {
                   </div>
 
                   {/* Optional link */}
-                  {card.href && card.linkLabel && (
+                  {card.href && card.linkLabel ? (
                     <a
                       href={card.href}
                       target="_blank"
@@ -114,7 +109,14 @@ export default function Contact() {
                       {card.linkLabel}
                       <span aria-hidden="true">→</span>
                     </a>
-                  )}
+                  ) : card.linkLabel ? (
+                    <span
+                      aria-disabled="true"
+                      className="mt-auto inline-flex items-center gap-1 text-xs font-semibold text-zinc-400 dark:text-zinc-500 cursor-not-allowed"
+                    >
+                      {card.linkLabel}
+                    </span>
+                  ) : null}
                 </div>
               );
             })}
@@ -129,40 +131,36 @@ export default function Contact() {
                   <Store className="h-5 w-5 text-white" strokeWidth={1.75} />
                 </div>
                 <p className="text-zinc-900 dark:text-stone-50 font-bold text-lg transition-colors duration-300">
-                  Take-Away Boutique
+                  Pickup &amp; Delivery Bakery
                 </p>
               </div>
               <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed transition-colors duration-300">
-                La Porta Cake is a take-away bakery boutique. We do not offer
-                dine-in seating. All orders are prepared fresh and packaged
-                beautifully for you to enjoy anywhere you like. Pre-order online
-                for a guaranteed pickup slot.
+                La Porta Cake prepares premium cakes and sweets for scheduled
+                pickup and local delivery. Orders are packaged carefully, and
+                confirmation may include a minimum non-refundable deposit before
+                preparation.
               </p>
             </div>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-              {/* Primary — WhatsApp */}
-              <a
-                href="https://wa.me/962700000000" // TODO: Replace with real WhatsApp number
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 px-7 rounded-full shadow-lg hover:shadow-rose-200 dark:hover:shadow-rose-900/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              {/* Primary — WhatsApp demo state */}
+              <span
+                aria-disabled="true"
+                className="flex items-center justify-center gap-2 bg-stone-200 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 font-bold py-4 px-7 rounded-full cursor-not-allowed"
               >
                 <MessageCircle className="h-5 w-5" strokeWidth={2} />
-                Order on WhatsApp
-              </a>
+                WhatsApp Details Coming Soon
+              </span>
 
               {/* Secondary — Directions */}
-              <a
-                href="#" // TODO: Replace with real Google Maps directions link
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 border-2 border-rose-400 text-rose-500 hover:bg-rose-500 hover:text-white font-bold py-4 px-7 rounded-full transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-rose-200 dark:hover:shadow-rose-900/30 active:translate-y-0 cursor-pointer"
+              <span
+                aria-disabled="true"
+                className="flex items-center justify-center gap-2 border-2 border-stone-200 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 font-bold py-4 px-7 rounded-full cursor-not-allowed"
               >
                 <MapPin className="h-5 w-5" strokeWidth={2} />
-                Get Directions
-              </a>
+                Directions Coming Soon
+              </span>
             </div>
           </div>
 

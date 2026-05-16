@@ -15,15 +15,15 @@ const steps = [
     label: "Step 2",
     title: "Place Your Order",
     description:
-      "Add items to your cart and confirm your take-away order online. We prepare everything fresh to be ready when you arrive.",
+      "Add items to your cart, choose pickup or delivery, and send your order details through WhatsApp.",
   },
   {
     id: 3,
     icon: Store,
     label: "Step 3",
-    title: "Pick Up In-Store",
+    title: "Confirm & Receive",
     description:
-      "Come by La Porta at your chosen time and collect your boxed treats — no waiting, no fuss. Just exceptional baking, ready for you.",
+      "We confirm timing, fulfillment details, and any minimum non-refundable deposit before preparing your boxed treats.",
   },
 ];
 
@@ -49,8 +49,8 @@ export default function HowItWorks() {
           </h2>
 
           <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg max-w-xl mx-auto leading-relaxed transition-colors duration-300">
-            Order your favourites online and collect them fresh from our
-            boutique — it really is that easy.
+            Order your favourites online for scheduled pickup or local delivery
+            — it really is that easy.
           </p>
         </div>
 

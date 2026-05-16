@@ -25,7 +25,7 @@ export default function MenuPage() {
           </h1>
           <p className="text-zinc-500 dark:text-zinc-400 text-lg md:text-xl max-w-xl mx-auto leading-relaxed transition-colors duration-300">
             Explore our handcrafted cakes and bakery favorites, prepared for
-            pickup.
+            pickup or delivery.
           </p>
         </div>
 

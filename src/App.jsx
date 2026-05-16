@@ -19,27 +19,27 @@ function App() {
     <ThemeProvider>
       <CartProvider>
         <CartDrawerProvider>
-        <BrowserRouter>
-          <ScrollToHash />
-          <div className="min-h-screen bg-stone-50 dark:bg-zinc-950 transition-colors duration-300 flex flex-col">
-            <Navbar />
-          
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/menu" element={<MenuPage />} />
-              <Route path="/product/:id" element={<ProductDetailPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </main>
+          <BrowserRouter>
+            <ScrollToHash />
+            <div className="min-h-screen bg-stone-50 dark:bg-zinc-950 transition-colors duration-300 flex flex-col">
+              <Navbar />
 
-          <Footer />
-          <CartSlideOver />
-        </div>
-      </BrowserRouter>
-    </CartDrawerProvider>
-    </CartProvider>
+              <main className="flex-1">
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/menu" element={<MenuPage />} />
+                  <Route path="/product/:id" element={<ProductDetailPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </main>
+
+              <Footer />
+              <CartSlideOver />
+            </div>
+          </BrowserRouter>
+        </CartDrawerProvider>
+      </CartProvider>
     </ThemeProvider>
   );
 }

@@ -8,19 +8,18 @@ const NAV_LINKS = [
   { label: "Contact", to: "/#contact" },
 ];
 
-// TODO: Replace with real social URLs before going live.
 const SOCIAL_LINKS = [
   {
     id: "instagram",
     icon: Camera,
     label: "Instagram",
-    href: "https://www.instagram.com/",
+    href: null,
   },
   {
     id: "whatsapp",
     icon: MessageCircle,
     label: "WhatsApp",
-    href: "https://wa.me/962700000000",
+    href: null,
   },
 ];
 
@@ -60,23 +59,40 @@ export default function Footer() {
             {/* Tagline */}
             <p className="text-stone-500 dark:text-stone-400 text-sm leading-relaxed max-w-xs">
               Handcrafted cakes &amp; pastries, baked fresh every morning in
-              Amman, Jordan. Order online — collect in&nbsp;store.
+              Amman, Jordan. Order online for pickup or delivery.
             </p>
 
             {/* Social icons */}
-            <div className="flex items-center gap-3 mt-2">
-              {SOCIAL_LINKS.map(({ id, icon: Icon, label, href }) => (
-                <a
-                  key={id}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-stone-500 dark:bg-white/10 dark:text-stone-300 hover:bg-[#C98790] hover:text-white transition-all duration-300 cursor-pointer"
-                >
-                  <Icon className="h-4 w-4" strokeWidth={1.75} />
-                </a>
-              ))}
+            <div className="mt-2 flex flex-col gap-2">
+              <div className="flex items-center gap-3">
+                {SOCIAL_LINKS.map(({ id, icon: Icon, label, href }) =>
+                  href ? (
+                    <a
+                      key={id}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-stone-500 transition-all duration-300 hover:bg-[#C98790] hover:text-white dark:bg-white/10 dark:text-stone-300 cursor-pointer"
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={1.75} />
+                    </a>
+                  ) : (
+                    <span
+                      key={id}
+                      aria-label={`${label} details will be added before launch`}
+                      aria-disabled="true"
+                      title={`${label} details will be added before launch`}
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/60 text-stone-400 dark:bg-white/10 dark:text-stone-500 cursor-not-allowed"
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={1.75} />
+                    </span>
+                  )
+                )}
+              </div>
+              <p className="text-xs leading-relaxed text-stone-400 dark:text-stone-500">
+                Social and WhatsApp details will be added before launch.
+              </p>
             </div>
           </div>
 
@@ -102,7 +118,7 @@ export default function Footer() {
           {/* ——— Pickup info ——— */}
           <div className="flex flex-col gap-4">
             <p className="text-stone-900 dark:text-white text-xs font-bold uppercase tracking-widest">
-              Pickup Info
+              Visit &amp; Delivery Info
             </p>
 
             <div className="flex flex-col gap-3">
@@ -119,14 +135,12 @@ export default function Footer() {
                 <p>Sat – Sun: 10 AM – 10 PM</p>
               </div>
 
-              <a
-                href="#" // TODO: Replace with real Google Maps link
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#C98790] hover:text-[#D89AA3] transition-colors duration-200 cursor-pointer"
+              <span
+                aria-disabled="true"
+                className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-stone-400 dark:text-stone-500 cursor-not-allowed"
               >
-                Get Directions →
-              </a>
+                Directions coming soon
+              </span>
             </div>
           </div>
 
@@ -137,7 +151,7 @@ export default function Footer() {
       <div className="border-t border-rose-200/50 dark:border-rose-800/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500 dark:text-stone-400">
           <p>© {year} La Porta Cake. All rights reserved.</p>
-          <p>Take-away boutique · Amman, Jordan · Pickup only</p>
+          <p>Bakery boutique · Amman, Jordan · Pickup &amp; delivery</p>
         </div>
       </div>
 

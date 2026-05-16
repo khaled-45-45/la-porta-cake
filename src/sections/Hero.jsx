@@ -13,8 +13,8 @@ export default function Hero() {
           </h1>
 
           <p className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl mb-8 leading-relaxed max-w-md transition-colors duration-300">
-            Order your favorite premium cakes and desserts for take-away in
-            Amman. Freshness in every bite.
+            Order your favorite premium cakes and desserts for pickup or
+            delivery in Amman. Freshness in every bite.
           </p>
 
           <Link

@@ -149,7 +149,7 @@ export default function CartSlideOver() {
               </span>
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-6 text-center transition-colors duration-300">
-              Taxes and pickup schedule calculated at checkout.
+              Pickup or delivery details are confirmed at checkout.
             </p>
             <div className="flex flex-col gap-3">
               <Link
