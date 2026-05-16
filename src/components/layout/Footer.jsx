@@ -24,6 +24,8 @@ const SOCIAL_LINKS = [
   },
 ];
 
+const logoSrc = "/favicon.png";
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -37,12 +39,21 @@ export default function Footer() {
           {/* ——— Brand column ——— */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             {/* Wordmark */}
-            <Link to="/" className="flex items-center gap-1 select-none w-fit cursor-pointer">
-              <span className="text-xl font-extrabold tracking-widest text-[#C98790]">
-                LA&nbsp;PORTA
+            <Link to="/" className="flex items-center gap-3 select-none w-fit cursor-pointer">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#fff7ef] p-0.5 shadow-sm ring-1 ring-[#C98790]/35 dark:bg-[#f7e8df] dark:ring-[#E0A0AA]/50">
+                <img
+                  src={logoSrc}
+                  alt="La Porta Cake logo"
+                  className="h-full w-full rounded-full object-contain"
+                />
               </span>
-              <span className="text-xl font-light tracking-widest text-stone-900 dark:text-white">
-                CAKE
+              <span className="flex flex-col leading-none">
+                <span className="font-serif text-sm font-bold uppercase tracking-[0.26em] text-stone-900 dark:text-white">
+                  LA PORTA
+                </span>
+                <span className="mt-1.5 font-serif text-xs font-bold uppercase tracking-[0.32em] text-[#C98790] dark:text-[#E0A0AA]">
+                  CAKE
+                </span>
               </span>
             </Link>
 

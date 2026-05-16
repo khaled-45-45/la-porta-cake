@@ -12,6 +12,8 @@ const navLinks = [
   { label: "Contact", to: "/#contact" },
 ];
 
+const logoSrc = "/logo.png";
+
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -22,12 +24,21 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-b border-stone-200 dark:border-zinc-800">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* ——— Logo ——— */}
-        <Link to="/" className="flex items-center gap-1 select-none cursor-pointer">
-          <span className="text-xl font-extrabold tracking-widest text-rose-400">
-            LA&nbsp;PORTA
+        <Link to="/" className="flex min-w-0 items-center gap-3 select-none cursor-pointer sm:gap-3.5">
+          <span className="flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-full md:h-[60px] md:w-[60px]">
+            <img
+              src={logoSrc}
+              alt="La Porta Cake logo"
+              className="h-full w-full scale-[1.24] object-contain"
+            />
           </span>
-          <span className="text-xl font-light tracking-widest text-zinc-900 dark:text-stone-50">
-            CAKE
+          <span className="flex min-w-0 flex-col justify-center gap-1 leading-none">
+            <span className="brand-la-porta text-[20px]">
+              LA PORTA
+            </span>
+            <span className="brand-cake text-[20px]">
+              CAKE
+            </span>
           </span>
         </Link>
 

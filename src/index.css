@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@600;700&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -8,4 +9,30 @@
 
 .dark {
   --footer-bg: #4A2730;
+}
+
+.brand-la-porta {
+  width: max-content;
+  font-family: "Cinzel", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  color: #181111;
+}
+
+.dark .brand-la-porta {
+  color: #fff7f1;
+}
+
+.brand-cake {
+  width: max-content;
+  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  line-height: 1;
+  color: #C98790;
+}
+
+.dark .brand-cake {
+  color: #E0A0AA;
 }
