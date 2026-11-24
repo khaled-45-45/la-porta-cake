@@ -1,0 +1,7 @@
+{
+  "extends": "@la-porta/config/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "*.config.ts"]
+}
