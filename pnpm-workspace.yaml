@@ -1,0 +1,5 @@
+# pnpm workspace and settings.
+# Workspace packages (apps/*, packages/*) are added in Phase 1.
+
+# Refuse to install when Node.js or pnpm do not match "engines" in package.json.
+engineStrict: true
