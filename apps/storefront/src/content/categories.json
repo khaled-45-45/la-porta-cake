@@ -1,0 +1,30 @@
+[
+  {
+    "id": "flavour-cakes",
+    "slug": "flavour-cakes",
+    "name": {
+      "ar": "كيك بالنكهات",
+      "en": "Flavour cakes"
+    },
+    "description": {
+      "ar": "جاهز بالفاترينة كل يوم، وسعره ثابت. تعال خده من المحل، أو اطلبه على واتساب ومنجهّزلك ياه.",
+      "en": "Ready in the shop window every day, at a fixed price. Pick one up from the shop, or order on WhatsApp and we’ll have it ready."
+    },
+    "layout": "flavour-wall",
+    "sort": 0
+  },
+  {
+    "id": "sweets",
+    "slug": "sweets",
+    "name": {
+      "ar": "حلويات",
+      "en": "Sweets"
+    },
+    "description": {
+      "ar": "ريفاني وديسباسيتو وبيتي فور وقطع كيك بالفاترينة، وأصناف تانية بنعملها على الطلب.",
+      "en": "Revani, Despacito, petit four and cake slices in the shop window, plus a few things we make to order."
+    },
+    "layout": "menu-list",
+    "sort": 1
+  }
+]

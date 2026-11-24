@@ -1,6 +1,6 @@
 # Content gaps and image review
 
-- **Last updated:** 2026-11-24 (Phase 0)
+- **Last updated:** 2026-11-24 (Phase 2: content and images migrated)
 - **Source:** the La Porta Cake prototype on the Claude Design canvas, and information confirmed by the owner in conversation.
 - **Rule:** nothing in this file is invented. Items marked unconfirmed stay `null` or unpublished until the owner confirms them.
 
@@ -147,4 +147,47 @@ No other product's photo is reused for these items.
 | Instagram prefilled message | Not possible (platform limitation); the copy-summary button remains |
 | Embedded map | Not used (decision 0007) |
 
-Export results for Track A will be added here in Phase 2.
+## 6. Phase 2 migration results
+
+### Track A export
+
+| Result | Count |
+|---|---|
+| Assets exported from the prototype asset store | 48 of 48 |
+| Export failures | 0 |
+| Valid JPEG files (checked with ffprobe) | 48 of 48 |
+| Approved, in `apps/storefront/public/images/` (served by the website) | 33 (2 site, 15 products, 16 designs) |
+| Pending, in `private-assets/review/` (not served) | 15 (1 product, 14 designs; 13 Review, 2 Hold) |
+| Accounted for | 48 of 48, each exactly once |
+
+Each image keeps its prototype asset id. Pending images live outside anything the website serves, and their files are kept out of Git (decision 0010); only `private-assets/review/manifest.json` is tracked. The manifest records for each one: asset id, local file path, SHA-256 checksum, size, alt text in both languages, the product or design it belongs to, its level (Review or Hold) and the reasons, without customer names. `pnpm verify:review-assets` checks the local files. See `private-assets/README.md` for how to approve an image.
+
+- The 14 designs with pending photos have `isPublished: false` and point only to their private file.
+- **Despacito** stays listed but shows the placeholder (`images: []`) until its photo is approved. Its photo is in `private-assets/review/products/despacito.jpg`.
+- Tests fail if a pending image appears in the public folder or in published content, if an approved image is outside it, or if any of the 48 assets is missing.
+
+### Track B
+
+The 5 products in section 4 have `images: []` and will use the placeholder component. No other photo is assigned to them; a test enforces this. Together with Despacito, 6 products currently show the placeholder.
+
+### Content decisions made during migration
+
+| Item | Handling |
+|---|---|
+| Sizes and options (Small / Medium / Large / Two tiers in the prototype) | Not migrated. They were prototype placeholders, not confirmed options. All products have `variants: []`. |
+| Flavour cakes description | "Fixed price for each size" shortened to "fixed price", since sizes are unconfirmed |
+| Maamoul | Availability `seasonal` (the prototype showed "unavailable" plus "(seasonal)" in the name) |
+| FAQ, reference photo answer | Arabic now lists Messenger too, matching the English |
+| FAQ answers that were only placeholders | Stored as unanswered (`null`): cancellation policy, allergies, payment methods |
+| FAQ delivery answer | Kept "delivery is available"; the "xx" for areas and fees removed |
+| FAQ seasonal answer | The bracketed placeholder removed; "we announce them on Instagram" kept |
+
+### Text written in the prototype, not confirmed by the owner
+
+These were written during the prototype from the photos or as general wording. They are kept, but need the owner's confirmation:
+
+- Product descriptions: KitKat cake, red velvet slices, chocolate slices (written from the photos).
+- FAQ "Can I order for the same day?": "Usually yes for items marked Ready."
+- FAQ "Is Ready guaranteed?": availability is updated by hand during the day.
+- FAQ "When do seasonal desserts come out?": "We announce them on Instagram."
+- All 30 design titles (descriptive names written for the gallery).

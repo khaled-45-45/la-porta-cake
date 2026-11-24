@@ -1,0 +1,74 @@
+{
+  "name": {
+    "ar": "لابورتا كيك",
+    "en": "La Porta Cake"
+  },
+  "phone": {
+    "e164": "+962788890049",
+    "display": "0788890049"
+  },
+  "whatsapp": {
+    "number": "962788890049",
+    "url": "https://wa.me/962788890049"
+  },
+  "instagram": {
+    "handle": "laportacake",
+    "url": "https://www.instagram.com/laportacake/"
+  },
+  "facebook": {
+    "url": "https://www.facebook.com/share/19r78WtxnX/"
+  },
+  "messenger": {
+    "url": null
+  },
+  "address": {
+    "ar": "التطوير الحضري، الرصيفة، الزرقاء، الأردن",
+    "en": "Al-Tatweer Al-Hadari, Russeifa, Zarqa, Jordan"
+  },
+  "mapsUrl": "https://maps.app.goo.gl/MRRZ49LmJsrivkUa6",
+  "hours": [
+    {
+      "days": "daily",
+      "opens": "11:00",
+      "closes": "23:00"
+    }
+  ],
+  "delivery": {
+    "available": true,
+    "areas": null,
+    "fees": null
+  },
+  "defaultLeadHours": 24,
+  "currency": "JOD",
+  "onlinePayment": false,
+  "images": {
+    "shopWindow": {
+      "src": "/images/site/shop-window-wedding-cake.jpg",
+      "width": 1200,
+      "height": 900,
+      "alt": {
+        "ar": "كيكة عرس كبيرة بالفراولة والكريمة في فاترينة محل لابورتا",
+        "en": "Large strawberry and cream wedding cake in the La Porta shop window"
+      },
+      "sourceAssetId": "58fcdfec8f13ade0391f1968b8bc1875",
+      "review": {
+        "status": "approved",
+        "reasons": []
+      }
+    },
+    "shopInterior": {
+      "src": "/images/site/shop-wedding-cake-angle.jpg",
+      "width": 1200,
+      "height": 900,
+      "alt": {
+        "ar": "كيكة كبيرة بالفراولة داخل محل لابورتا كيك",
+        "en": "Large strawberry cake inside the La Porta Cake shop"
+      },
+      "sourceAssetId": "1714e905a3324a19b3e07dd00f4cd613",
+      "review": {
+        "status": "approved",
+        "reasons": []
+      }
+    }
+  }
+}

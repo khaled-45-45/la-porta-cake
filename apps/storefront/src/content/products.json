@@ -1,0 +1,575 @@
+[
+  {
+    "id": "kitkat-cake",
+    "slug": "kitkat-cake",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "كيكة كيت كات",
+      "en": "KitKat cake"
+    },
+    "description": {
+      "ar": "كيكة مغطاية بصوص الشوكولاتة، فوقها قطع كيت كات وفراولة. جاهزة بالفاترينة كل يوم.",
+      "en": "A cake covered in chocolate sauce, topped with KitKat pieces and strawberries. Ready in the shop window every day."
+    },
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/kitkat-cake.jpg",
+        "width": 960,
+        "height": 1200,
+        "alt": {
+          "ar": "كيكة كيت كات",
+          "en": "KitKat cake"
+        },
+        "sourceAssetId": "56d678319f6f1dfb010beba51550f1ad",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 0,
+    "isActive": true
+  },
+  {
+    "id": "lotus-cake",
+    "slug": "lotus-cake",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "كيكة لوتس",
+      "en": "Lotus cake"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/lotus-cake.jpg",
+        "width": 676,
+        "height": 1200,
+        "alt": {
+          "ar": "كيكة لوتس",
+          "en": "Lotus cake"
+        },
+        "sourceAssetId": "51f86d6e09da5d435e97bf3917b0b592",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 1,
+    "isActive": true
+  },
+  {
+    "id": "strawberry-red-velvet",
+    "slug": "strawberry-red-velvet",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "ريد فيلفيت بالفراولة",
+      "en": "Strawberry red velvet"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/strawberry-red-velvet.jpg",
+        "width": 676,
+        "height": 1200,
+        "alt": {
+          "ar": "ريد فيلفيت بالفراولة",
+          "en": "Strawberry red velvet"
+        },
+        "sourceAssetId": "717712e804eb5cad47be1b29131b5d03",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 2,
+    "isActive": true
+  },
+  {
+    "id": "fruit-cake",
+    "slug": "fruit-cake",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "كيكة الفواكه",
+      "en": "Fruit cake"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/fruit-cake.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "كيكة الفواكه",
+          "en": "Fruit cake"
+        },
+        "sourceAssetId": "45b64b419894010cdc813c32d5a96770",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 3,
+    "isActive": true
+  },
+  {
+    "id": "oreo-cake",
+    "slug": "oreo-cake",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "كيكة أوريو",
+      "en": "Oreo cake"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/oreo-cake.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "كيكة أوريو",
+          "en": "Oreo cake"
+        },
+        "sourceAssetId": "76a2e14c6deb4343e5ce57c3bd0767c1",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 4,
+    "isActive": true
+  },
+  {
+    "id": "caramel-cake",
+    "slug": "caramel-cake",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "كيكة كراميل",
+      "en": "Caramel cake"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/caramel-cake.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "كيكة كراميل",
+          "en": "Caramel cake"
+        },
+        "sourceAssetId": "bc27287fd2eab523cf5c452ed83b0dee",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 5,
+    "isActive": true
+  },
+  {
+    "id": "berry-cake",
+    "slug": "berry-cake",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "كيكة التوت",
+      "en": "Berry cake"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/berry-cake.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "كيكة التوت",
+          "en": "Berry cake"
+        },
+        "sourceAssetId": "4dbb9c40472beb84eddb8aaf25425b47",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 6,
+    "isActive": true
+  },
+  {
+    "id": "chocolate-cake",
+    "slug": "chocolate-cake",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "كيكة شوكولاتة",
+      "en": "Chocolate cake"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/chocolate-cake.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "كيكة شوكولاتة",
+          "en": "Chocolate cake"
+        },
+        "sourceAssetId": "cd90b24fd3c98d228bf3378ec8a081ab",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 7,
+    "isActive": true
+  },
+  {
+    "id": "chocolate-and-nuts",
+    "slug": "chocolate-and-nuts",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "شوكولاتة بالمكسرات",
+      "en": "Chocolate and nuts"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/chocolate-and-nuts.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "شوكولاتة بالمكسرات",
+          "en": "Chocolate and nuts"
+        },
+        "sourceAssetId": "25db158a50252b3ec921eaf1842760f2",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 8,
+    "isActive": true
+  },
+  {
+    "id": "strawberry-and-oreo",
+    "slug": "strawberry-and-oreo",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "فراولة وأوريو",
+      "en": "Strawberry and Oreo"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/strawberry-and-oreo.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "فراولة وأوريو",
+          "en": "Strawberry and Oreo"
+        },
+        "sourceAssetId": "4da68e5b4ab836d8f176f86d989e7eb0",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 9,
+    "isActive": true
+  },
+  {
+    "id": "chocolate-and-strawberry",
+    "slug": "chocolate-and-strawberry",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "شوكولاتة بالفراولة",
+      "en": "Chocolate and strawberry"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/chocolate-and-strawberry.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "شوكولاتة بالفراولة",
+          "en": "Chocolate and strawberry"
+        },
+        "sourceAssetId": "6144108409fee83996bf03f01510f2e4",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 10,
+    "isActive": true
+  },
+  {
+    "id": "chocolate-and-cream",
+    "slug": "chocolate-and-cream",
+    "categoryId": "flavour-cakes",
+    "name": {
+      "ar": "شوكولاتة بالكريمة",
+      "en": "Chocolate and cream"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/chocolate-and-cream.jpg",
+        "width": 900,
+        "height": 1200,
+        "alt": {
+          "ar": "شوكولاتة بالكريمة",
+          "en": "Chocolate and cream"
+        },
+        "sourceAssetId": "72d6fe8d97fa57b3b93ba60fc646b31f",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 11,
+    "isActive": true
+  },
+  {
+    "id": "orange-revani",
+    "slug": "orange-revani",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "ريفاني بالبرتقال",
+      "en": "Orange revani"
+    },
+    "description": {
+      "ar": "كيك برتقال مشبّع بصوص خاص.",
+      "en": "Orange cake soaked in a special sauce."
+    },
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/orange-revani.jpg",
+        "width": 676,
+        "height": 1200,
+        "alt": {
+          "ar": "ريفاني بالبرتقال",
+          "en": "Orange revani"
+        },
+        "sourceAssetId": "b0c3994f41af4fb9ce3755cf91079ccb",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 12,
+    "isActive": true
+  },
+  {
+    "id": "despacito",
+    "slug": "despacito",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "ديسباسيتو",
+      "en": "Despacito"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [],
+    "sort": 13,
+    "isActive": true
+  },
+  {
+    "id": "red-velvet-slices",
+    "slug": "red-velvet-slices",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "قطع ريد فيلفيت",
+      "en": "Red velvet slices"
+    },
+    "description": {
+      "ar": "بالكريمة والفراولة.",
+      "en": "With cream and strawberry."
+    },
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/red-velvet-slices.jpg",
+        "width": 676,
+        "height": 1200,
+        "alt": {
+          "ar": "قطع ريد فيلفيت",
+          "en": "Red velvet slices"
+        },
+        "sourceAssetId": "6e0b517fa3cedd16c24b46b541eb9d24",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 14,
+    "isActive": true
+  },
+  {
+    "id": "chocolate-slices",
+    "slug": "chocolate-slices",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "قطع شوكولاتة",
+      "en": "Chocolate slices"
+    },
+    "description": {
+      "ar": "بموس الشوكولاتة والفراولة.",
+      "en": "With chocolate mousse and strawberry."
+    },
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [
+      {
+        "src": "/images/products/chocolate-slices.jpg",
+        "width": 676,
+        "height": 1200,
+        "alt": {
+          "ar": "قطع شوكولاتة",
+          "en": "Chocolate slices"
+        },
+        "sourceAssetId": "28710a680fecffa4f84b688aef3648cd",
+        "review": {
+          "status": "approved",
+          "reasons": []
+        }
+      }
+    ],
+    "sort": 15,
+    "isActive": true
+  },
+  {
+    "id": "petit-four",
+    "slug": "petit-four",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "بيتي فور",
+      "en": "Petit four"
+    },
+    "description": null,
+    "availability": "ready",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [],
+    "sort": 16,
+    "isActive": true
+  },
+  {
+    "id": "cheesecake",
+    "slug": "cheesecake",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "تشيز كيك",
+      "en": "Cheesecake"
+    },
+    "description": null,
+    "availability": "preorder",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [],
+    "sort": 17,
+    "isActive": true
+  },
+  {
+    "id": "mousse-cake",
+    "slug": "mousse-cake",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "كيك موس",
+      "en": "Mousse cake"
+    },
+    "description": null,
+    "availability": "preorder",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [],
+    "sort": 18,
+    "isActive": true
+  },
+  {
+    "id": "muffins",
+    "slug": "muffins",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "مافن",
+      "en": "Muffins"
+    },
+    "description": null,
+    "availability": "preorder",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [],
+    "sort": 19,
+    "isActive": true
+  },
+  {
+    "id": "maamoul",
+    "slug": "maamoul",
+    "categoryId": "sweets",
+    "name": {
+      "ar": "معمول",
+      "en": "Maamoul"
+    },
+    "description": null,
+    "availability": "seasonal",
+    "prepLeadHours": null,
+    "variants": [],
+    "images": [],
+    "sort": 20,
+    "isActive": true
+  }
+]

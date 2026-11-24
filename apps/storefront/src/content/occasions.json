@@ -1,0 +1,56 @@
+[
+  {
+    "id": "birthday",
+    "slug": "birthday",
+    "name": {
+      "ar": "عيد ميلاد",
+      "en": "Birthday"
+    },
+    "sort": 0
+  },
+  {
+    "id": "graduation",
+    "slug": "graduation",
+    "name": {
+      "ar": "تخرّج",
+      "en": "Graduation"
+    },
+    "sort": 1
+  },
+  {
+    "id": "kids",
+    "slug": "kids",
+    "name": {
+      "ar": "أطفال",
+      "en": "Kids"
+    },
+    "sort": 2
+  },
+  {
+    "id": "baby",
+    "slug": "baby",
+    "name": {
+      "ar": "مولود وجندر",
+      "en": "Baby and gender reveal"
+    },
+    "sort": 3
+  },
+  {
+    "id": "wedding",
+    "slug": "wedding",
+    "name": {
+      "ar": "خطوبة وعرس",
+      "en": "Engagement and wedding"
+    },
+    "sort": 4
+  },
+  {
+    "id": "simple",
+    "slug": "simple",
+    "name": {
+      "ar": "بسيطة وناعمة",
+      "en": "Simple and elegant"
+    },
+    "sort": 5
+  }
+]

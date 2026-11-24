@@ -9,5 +9,8 @@ test-results
 pnpm-lock.yaml
 next-env.d.ts
 
+# Editor and tool settings, not project code.
+.claude
+
 # Approved documents are kept exactly as written.
 **/*.md

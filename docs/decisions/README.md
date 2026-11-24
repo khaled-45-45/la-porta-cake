@@ -13,3 +13,4 @@ Each record states one decision, why it was made, and what follows from it. Reco
 | [0007](0007-map-link-only.md) | Google Maps link only, no embedded map | Approved | 2026-11-24 |
 | [0008](0008-hosting-local-first-vercel-ready.md) | Local development first, Vercel-ready | Approved | 2026-11-24 |
 | [0009](0009-git-repository.md) | Git repository `la-porta-cake`, private | Approved | 2026-11-24 |
+| [0010](0010-pending-images-private-and-out-of-git.md) | Pending images stay outside the public folder and outside Git | Approved | 2026-11-24 |

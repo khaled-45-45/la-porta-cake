@@ -29,11 +29,18 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Editors
+# Editors and local tool settings
 .vscode/*
 !.vscode/extensions.json
 .idea/
+.claude/
 
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Images awaiting the owner's approval stay local and out of Git (decisions 0006 and 0010).
+# Only the manifest is tracked. Ignoring the folder's contents (not the folder itself)
+# lets Git keep tracking the manifest.
+/private-assets/review/*
+!/private-assets/review/manifest.json

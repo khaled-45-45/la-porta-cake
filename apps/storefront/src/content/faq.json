@@ -1,0 +1,161 @@
+[
+  {
+    "id": "preorders",
+    "title": {
+      "ar": "الطلب المسبق",
+      "en": "Preorders"
+    },
+    "items": [
+      {
+        "id": "how-far-ahead",
+        "question": {
+          "ar": "كم يوم قبل لازم أطلب؟",
+          "en": "How far ahead should I order?"
+        },
+        "answer": {
+          "ar": "قبل يوم على الأقل للتصاميم الخاصة وقوالب السكر وقوالب الصور والتشيز كيك والموس. الكيك بالنكهات جاهز بالفاترينة.",
+          "en": "At least a day ahead for custom designs, sugar-paste and printed-photo cakes, cheesecake and mousse. Flavour cakes are ready in the shop."
+        }
+      },
+      {
+        "id": "same-day",
+        "question": {
+          "ar": "بقدر أطلب لنفس اليوم؟",
+          "en": "Can I order for the same day?"
+        },
+        "answer": {
+          "ar": "الأصناف اللي حالتها «جاهز» غالبًا نعم. راسلنا لنتأكد قبل ما تيجي.",
+          "en": "Usually yes for items marked “Ready”. Message us to check before you come."
+        }
+      },
+      {
+        "id": "cancel-or-change",
+        "question": {
+          "ar": "بقدر ألغي أو أعدّل الطلب؟",
+          "en": "Can I cancel or change my order?"
+        },
+        "answer": null
+      }
+    ]
+  },
+  {
+    "id": "availability",
+    "title": {
+      "ar": "التوفر",
+      "en": "Availability"
+    },
+    "items": [
+      {
+        "id": "ready-guaranteed",
+        "question": {
+          "ar": "هل حالة «جاهز» مضمونة؟",
+          "en": "Is “Ready” guaranteed?"
+        },
+        "answer": {
+          "ar": "لا. نحدّثها يدويًا خلال اليوم، فممكن صنف يخلص قبل التحديث. للتأكد راسلنا على واتساب.",
+          "en": "No. We update it by hand during the day, so an item can sell out before we update it. Message us on WhatsApp to be sure."
+        }
+      },
+      {
+        "id": "seasonal",
+        "question": {
+          "ar": "متى بتنزل الحلويات الموسمية؟",
+          "en": "When do seasonal desserts come out?"
+        },
+        "answer": {
+          "ar": "بنعلن عنها على إنستغرام.",
+          "en": "We announce them on Instagram."
+        }
+      }
+    ]
+  },
+  {
+    "id": "custom-orders",
+    "title": {
+      "ar": "الطلبات الخاصة",
+      "en": "Custom orders"
+    },
+    "items": [
+      {
+        "id": "sugar-vs-print",
+        "question": {
+          "ar": "شو الفرق بين قوالب السكر وقوالب الصور؟",
+          "en": "What’s the difference between sugar paste and a printed photo?"
+        },
+        "answer": {
+          "ar": "قوالب السكر مجسّمات بارزة من عجينة السكر. قوالب الصور صورة مسطحة على ورق قابل للأكل. في أمثلة على الاثنين بمعرض أعمالنا.",
+          "en": "Sugar paste means raised figures modelled from sugar paste. A printed photo is a flat picture on edible paper. Our work page has examples of both."
+        }
+      },
+      {
+        "id": "like-a-photo",
+        "question": {
+          "ar": "بقدر أطلب كيكة زي صورة شفتها؟",
+          "en": "Can you make a cake like a photo I’ve seen?"
+        },
+        "answer": {
+          "ar": "أكيد. اضغط «بدي زيه» على أي تصميم بمعرض أعمالنا، أو ابعتلنا صورتك على واتساب.",
+          "en": "Yes. Press “I want one like this” on any design in our work, or send us your photo on WhatsApp."
+        }
+      },
+      {
+        "id": "reference-photo",
+        "question": {
+          "ar": "كيف أرسل الصورة المرجعية؟",
+          "en": "How do I send a reference image?"
+        },
+        "answer": {
+          "ar": "بعد ما ينفتح واتساب أو إنستغرام أو ماسنجر من نموذج الطلب، أرسل الصورة بنفس المحادثة.",
+          "en": "After WhatsApp, Instagram or Messenger opens from the order form, send the photo in the same chat."
+        }
+      },
+      {
+        "id": "allergies",
+        "question": {
+          "ar": "بتعملوا كيك لحساسية معينة؟",
+          "en": "Do you make cakes for specific allergies?"
+        },
+        "answer": null
+      }
+    ]
+  },
+  {
+    "id": "payment-and-pickup",
+    "title": {
+      "ar": "الدفع والاستلام",
+      "en": "Payment and pickup"
+    },
+    "items": [
+      {
+        "id": "pay-online",
+        "question": {
+          "ar": "بقدر أدفع عبر الموقع؟",
+          "en": "Can I pay on the website?"
+        },
+        "answer": {
+          "ar": "لا. ما في دفع عبر الموقع. السعر بنأكده معك بالمحادثة.",
+          "en": "No. There is no online payment. We confirm the price with you in the chat."
+        }
+      },
+      {
+        "id": "how-to-pay",
+        "question": {
+          "ar": "كيف بدفع؟",
+          "en": "How do I pay?"
+        },
+        "answer": null
+      },
+      {
+        "id": "delivery",
+        "question": {
+          "ar": "في توصيل؟",
+          "en": "Do you deliver?"
+        },
+        "answer": {
+          "ar": "أيوا، التوصيل متاح.",
+          "en": "Yes, delivery is available."
+        }
+      }
+    ]
+  }
+]

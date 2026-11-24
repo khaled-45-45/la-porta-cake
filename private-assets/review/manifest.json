@@ -1,0 +1,268 @@
+{
+  "description": "Images awaiting the owner's approval (decision 0006). The image files are kept locally and are not in Git; only this manifest is tracked. Approve an entry by moving its file back under apps/storefront/public/images/ and updating the content record named in \"target\".",
+  "entries": [
+    {
+      "assetId": "6b037347b8bb6abbc391a71692cdea92",
+      "file": "private-assets/review/products/despacito.jpg",
+      "sha256": "fbfdc66c05e8eab811b16a8d552c08ba02ec4b7125ff11b57126cbdd83f7c1e0",
+      "width": 676,
+      "height": 1200,
+      "alt": {
+        "ar": "ديسباسيتو",
+        "en": "Despacito"
+      },
+      "target": {
+        "kind": "product",
+        "id": "despacito"
+      },
+      "level": "review",
+      "reasons": ["Confirm this photo shows Despacito."]
+    },
+    {
+      "assetId": "385fdd6a61f2fd95058a40effaa7bdbf",
+      "file": "private-assets/review/designs/space-cake.jpg",
+      "sha256": "220824aa548bdb2ca2b66c96e1c8453fb901b77f543bbafbd3d6a88a4bf43da6",
+      "width": 1200,
+      "height": 670,
+      "alt": {
+        "ar": "كيكة الفضاء",
+        "en": "Space cake"
+      },
+      "target": {
+        "kind": "design",
+        "id": "space-cake"
+      },
+      "level": "review",
+      "reasons": ["Background looks AI-edited; confirm it still shows the real cake."]
+    },
+    {
+      "assetId": "14de649621e447c42d91c59ae116c324",
+      "file": "private-assets/review/designs/calendar-with-yellow-flowers.jpg",
+      "sha256": "24106126415a878b4a0f4d34e4a872ad23bfa34eb07d14284d515c315dcca93f",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "روزنامة بالورد الأصفر",
+        "en": "Calendar with yellow flowers"
+      },
+      "target": {
+        "kind": "design",
+        "id": "calendar-with-yellow-flowers"
+      },
+      "level": "review",
+      "reasons": ["The ribbon text may include a personal name."]
+    },
+    {
+      "assetId": "a2232f06551505ea355969974914746c",
+      "file": "private-assets/review/designs/white-cake-with-a-name.jpg",
+      "sha256": "e641d3ed0f3cd59c6bfb2e9da365a83e58fca12c32f6846b60123a2084545466",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "كيكة بيضاء بالاسم",
+        "en": "White cake with a name"
+      },
+      "target": {
+        "kind": "design",
+        "id": "white-cake-with-a-name"
+      },
+      "level": "review",
+      "reasons": ["Customer's name visible on the cake."]
+    },
+    {
+      "assetId": "c697ead6b78ba533fa83ce456055d01e",
+      "file": "private-assets/review/designs/smiling-strawberries.jpg",
+      "sha256": "974de45aefdbc6ec8b5109153a5f057c1cb78aa78f2d89c471d720ab43fcf4c7",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "كيكة الفراولة الضاحكة",
+        "en": "Smiling strawberries"
+      },
+      "target": {
+        "kind": "design",
+        "id": "smiling-strawberries"
+      },
+      "level": "review",
+      "reasons": ["Customer's name visible on the cake."]
+    },
+    {
+      "assetId": "8a518ad1738f3e6e773c0079df66009a",
+      "file": "private-assets/review/designs/storybook-cake.jpg",
+      "sha256": "df669a8028908d058a7d0ec8678df63df3440f41d5090b2f15acd270474d63ab",
+      "width": 1200,
+      "height": 674,
+      "alt": {
+        "ar": "كيكة الكتاب",
+        "en": "Storybook cake"
+      },
+      "target": {
+        "kind": "design",
+        "id": "storybook-cake"
+      },
+      "level": "review",
+      "reasons": ["Handwritten dedication on the cake; confirm it may be shown."]
+    },
+    {
+      "assetId": "55b1d925024bf8567a05c650aa446238",
+      "file": "private-assets/review/designs/for-grandpa.jpg",
+      "sha256": "b2a22ca03af34b85a67b6da9d16fe7bdda0d750f272d48debf585d0b6a360ac7",
+      "width": 676,
+      "height": 1200,
+      "alt": {
+        "ar": "العمر كله يا سيدو",
+        "en": "For grandpa"
+      },
+      "target": {
+        "kind": "design",
+        "id": "for-grandpa"
+      },
+      "level": "review",
+      "reasons": [
+        "AI-generated illustration printed as the topper; personal names in the messages."
+      ]
+    },
+    {
+      "assetId": "00182af07594bb134042c4bb34a5c366",
+      "file": "private-assets/review/designs/red-gypsophila-cake.jpg",
+      "sha256": "11d31cc78ba33144127cf2e848254259cf2d0aabd1bc572961ea696099c3cfca",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "ورد الجبسوفيلا الأحمر",
+        "en": "Red gypsophila cake"
+      },
+      "target": {
+        "kind": "design",
+        "id": "red-gypsophila-cake"
+      },
+      "level": "review",
+      "reasons": ["Customer's name visible on the cake."]
+    },
+    {
+      "assetId": "ea3cc0b089859c9825015b6186086424",
+      "file": "private-assets/review/designs/number-1-with-sweets.jpg",
+      "sha256": "8ff5a37070a94378438ccd98feef1a4ebaa5e0db4c6af81e7dd8dcc31b7d6035",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "رقم 1 بالحلويات",
+        "en": "Number 1 with sweets"
+      },
+      "target": {
+        "kind": "design",
+        "id": "number-1-with-sweets"
+      },
+      "level": "review",
+      "reasons": [
+        "Customer's name visible on the cake.",
+        "Decorated with branded chocolate bars (KitKat)."
+      ]
+    },
+    {
+      "assetId": "f5b412f08a8aa09a143b87df8c3e52fb",
+      "file": "private-assets/review/designs/letter-cake-with-strawberries.jpg",
+      "sha256": "c950b3f15b7e4580f3f2bf6a1220a7fc86bb0e94b91325a155eb86be3f3ddd6d",
+      "width": 676,
+      "height": 1200,
+      "alt": {
+        "ar": "حرف بالفراولة",
+        "en": "Letter cake with strawberries"
+      },
+      "target": {
+        "kind": "design",
+        "id": "letter-cake-with-strawberries"
+      },
+      "level": "review",
+      "reasons": ["Personal handwritten message visible."]
+    },
+    {
+      "assetId": "e63fb37f542a94663a814b0f28c57961",
+      "file": "private-assets/review/designs/first-birthday-cake.jpg",
+      "sha256": "6f87184602985728610ef8b6775e766ab4e8010cb2d5b33506da911c5d568a4d",
+      "width": 676,
+      "height": 1200,
+      "alt": {
+        "ar": "كيكة السنة الأولى",
+        "en": "First birthday cake"
+      },
+      "target": {
+        "kind": "design",
+        "id": "first-birthday-cake"
+      },
+      "level": "review",
+      "reasons": [
+        "Customer's name visible on the cake.",
+        "Source of the printed illustration unknown."
+      ]
+    },
+    {
+      "assetId": "13f59bc736bf356d2e4d7d36befedf5f",
+      "file": "private-assets/review/designs/gym-cake.jpg",
+      "sha256": "963773447383aafde8869fd99eb3b199d68e88ebb5e6b88b4eebede7eea3640d",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "كيكة الجيم",
+        "en": "Gym cake"
+      },
+      "target": {
+        "kind": "design",
+        "id": "gym-cake"
+      },
+      "level": "review",
+      "reasons": ["Shows third-party sports brand logos.", "Customer's name visible on the cake."]
+    },
+    {
+      "assetId": "4c8a3bd83bbdd96d8d315b52df78aa81",
+      "file": "private-assets/review/designs/taekwondo-cake.jpg",
+      "sha256": "074408394a95796ba24dc32e65f909c4d696c1ee1d7824b63c541db382069874",
+      "width": 676,
+      "height": 1200,
+      "alt": {
+        "ar": "كيكة التايكواندو",
+        "en": "Taekwondo cake"
+      },
+      "target": {
+        "kind": "design",
+        "id": "taekwondo-cake"
+      },
+      "level": "review",
+      "reasons": ["Customer's name visible on the cake.", "Check the printed image's source."]
+    },
+    {
+      "assetId": "5edc6f8cba36645f67edb1f90a4cd841",
+      "file": "private-assets/review/designs/cartoon-character-batman.jpg",
+      "sha256": "2fe9c50c24a7451bb5051ebe61a5285509daf03979ddcce3f3e4aadcafb1d409",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "شخصية كرتونية: باتمان",
+        "en": "Cartoon character: Batman"
+      },
+      "target": {
+        "kind": "design",
+        "id": "cartoon-character-batman"
+      },
+      "level": "hold",
+      "reasons": ["Copyrighted character (Batman): hold unless usage rights are confirmed."]
+    },
+    {
+      "assetId": "951026b5767956c91e04a3fed8e26969",
+      "file": "private-assets/review/designs/cartoon-character-sonic.jpg",
+      "sha256": "df7469d73b47b68f8b310f2d995169cbdfbe4e37da31928096087d0d0b3119b1",
+      "width": 900,
+      "height": 1200,
+      "alt": {
+        "ar": "شخصية كرتونية: سونيك",
+        "en": "Cartoon character: Sonic"
+      },
+      "target": {
+        "kind": "design",
+        "id": "cartoon-character-sonic"
+      },
+      "level": "hold",
+      "reasons": ["Copyrighted character (Sonic): hold unless usage rights are confirmed."]
+    }
+  ]
+}
