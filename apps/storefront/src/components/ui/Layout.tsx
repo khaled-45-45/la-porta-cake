@@ -13,7 +13,7 @@ const tones: Record<SectionTone, string> = {
   cream: '',
   paper: 'bg-paper',
   sand: 'bg-sand',
-  ink: 'bg-ink text-paper',
+  ink: 'bg-ink text-paper focus-ring-on-dark',
 };
 
 interface SectionProps extends ComponentProps<'section'> {
@@ -47,18 +47,34 @@ interface SectionHeadingProps {
   /** Heading level; the visual size stays the same. */
   level?: 1 | 2 | 3;
   id?: string;
+  /** Shown at the end of the heading row, e.g. a "see all" link (prototype .head). */
+  action?: ReactNode;
   className?: string;
 }
 
-/** Section title with an optional introduction (prototype .head, .d-l, .lede). */
-export function SectionHeading({ title, lede, level = 2, id, className }: SectionHeadingProps) {
+/** Section title with an optional introduction and action (prototype .head, .d-l, .lede). */
+export function SectionHeading({
+  title,
+  lede,
+  level = 2,
+  id,
+  action,
+  className,
+}: SectionHeadingProps) {
   const Heading = `h${level}` as const;
-  return (
-    <div className={cn('flex flex-col gap-3', className)}>
+  const text = (textClassName?: string) => (
+    <div className={cn('flex min-w-0 flex-col gap-3', textClassName)}>
       <Heading id={id} className="m-0 text-display-l">
         {title}
       </Heading>
       {lede ? <p className="m-0 max-w-[34em] text-lede text-muted">{lede}</p> : null}
+    </div>
+  );
+  if (!action) return text(className);
+  return (
+    <div className={cn('flex flex-wrap items-end justify-between gap-x-10 gap-y-4', className)}>
+      {text()}
+      <div className="shrink-0">{action}</div>
     </div>
   );
 }

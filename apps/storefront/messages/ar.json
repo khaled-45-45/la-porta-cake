@@ -58,6 +58,107 @@
     "nameHint": "الاسم اللي بنكتبه على الطلب.",
     "nameError": "اكتب اسمك.",
     "notesLabel": "ملاحظات",
-    "sampleProduct": "تشيز كيك"
+    "sampleProduct": "تشيز كيك",
+    "compositesTitle": "المكوّنات المركّبة",
+    "compositesNote": "معاينة داخلية لمكوّنات الموقع ببيانات حقيقية من المستودع. للتطوير فقط.",
+    "header": "الترويسة والقائمة",
+    "footer": "التذييل",
+    "productCards": "بطاقات الأصناف",
+    "legend": "دليل التوفر",
+    "catalog": "تصفح المتجر",
+    "gallery": "معرض التصاميم",
+    "breadcrumbs": "مسار الصفحة",
+    "categoryNav": "أقسام المتجر",
+    "emptyState": "حالة فارغة",
+    "loading": "التحميل",
+    "ctaBand": "شريط دعوة",
+    "ctaTitle": "بدك تصميم خاص لمناسبتك؟",
+    "ctaBody": "قوالب السكر وقوالب الصور على الطلب. شوف شغلنا واختار \"بدي زيه\".",
+    "sampleCrumbProduct": "كيكة لوتس"
+  },
+  "Nav": {
+    "label": "القائمة الرئيسية",
+    "home": "الرئيسية",
+    "shop": "المتجر",
+    "customOrder": "كيك حسب الطلب",
+    "ourWork": "معرض أعمالنا",
+    "about": "من نحن",
+    "faq": "الطلب والأسئلة",
+    "contact": "تواصل معنا",
+    "brandSub": "لابورتا كيك",
+    "orderWhatsApp": "اطلب عبر واتساب",
+    "menu": "القائمة"
+  },
+  "Footer": {
+    "tagline": "لابورتا كيك. كيك مناسبات وحلويات غربية في الرصيفة.",
+    "instagram": "إنستغرام",
+    "visit": "زورونا",
+    "contact": "تواصل",
+    "pages": "صفحات",
+    "hours": "ساعات العمل: {days} من {opens} إلى {closes}",
+    "days": {
+      "daily": "يوميًا",
+      "satThu": "من السبت للخميس",
+      "fri": "الجمعة"
+    },
+    "map": "الموقع على الخريطة",
+    "whatsapp": "واتساب",
+    "facebook": "فيسبوك",
+    "delivery": "التوصيل متاح",
+    "copyright": "© {name}",
+    "paymentNote": "الأسعار بالدينار الأردني (د.أ). يتم تأكيد الطلب عبر واتساب أو إنستغرام، ولا يوجد دفع عبر الموقع.",
+    "messenger": "ماسنجر"
+  },
+  "Breadcrumbs": {
+    "label": "مسار الصفحة"
+  },
+  "States": {
+    "loading": "جاري التحميل…"
+  },
+  "Catalog": {
+    "searchLabel": "ابحث في الأصناف",
+    "searchPlaceholder": "ابحث: لوتس، ريفاني، بيتي فور…",
+    "filterLabel": "تصفية حسب القسم",
+    "sectionsLabel": "أقسام المتجر",
+    "all": "الكل",
+    "readyOnly": "الجاهز فقط",
+    "count": "{count, plural, =0 {لا توجد أصناف} one {صنف واحد} two {صنفان} few {{n} أصناف} many {{n} صنفًا} other {{n} صنف}}",
+    "emptyTitle": "ما لقينا أصناف بهذا البحث",
+    "emptyBody": "جرّب كلمة ثانية أو اعرض كل الأقسام. وإذا بدك صنف مش موجود، اطلبه ككيكة خاصة.",
+    "showAll": "اعرض كل الأصناف",
+    "customOrder": "اطلب كيكة خاصة",
+    "legendLabel": "معنى حالات التوفر",
+    "legend": {
+      "ready": "متوفر اليوم حسب آخر تحديث من المحل",
+      "preorder": "يحتاج حجز قبل موعد الاستلام بيوم على الأقل",
+      "unavailable": "غير متاح حاليًا",
+      "seasonal": "بيرجع بموسمه"
+    }
+  },
+  "Gallery": {
+    "filtersLabel": "تصفية التصاميم",
+    "decorationLabel": "نوع الزينة",
+    "occasionLabel": "المناسبة",
+    "allTypes": "الكل",
+    "allOccasions": "كل المناسبات",
+    "decoration": {
+      "sugar": "قوالب سكر",
+      "print": "قوالب صور",
+      "cream": "كريمة وكتابة"
+    },
+    "decorationNote": {
+      "sugar": "مجسّمات بعجينة السكر",
+      "print": "صورة على ورق قابل للأكل",
+      "cream": "رسم وكتابة بالكريمة"
+    },
+    "miniOnly": "ميني كيك بس",
+    "miniTag": "ميني",
+    "orderLikeThis": "بدي زيه",
+    "orderLikeThisLabel": "بدي زيه: {title}",
+    "count": "{count, plural, =0 {ما في تصاميم} one {تصميم واحد} two {تصميمين} few {{n} تصاميم} many {{n} تصميم} other {{n} تصميم}}",
+    "emptyTitle": "ما في تصاميم بهالاختيار لهلأ",
+    "emptyBody": "ابعتلنا صورة الكيكة اللي ببالك، ومنعملها إلك.",
+    "showAll": "اعرض كل التصاميم",
+    "orderYours": "اطلب تصميمك"
   }
 }

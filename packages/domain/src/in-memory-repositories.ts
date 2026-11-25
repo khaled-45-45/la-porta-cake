@@ -10,6 +10,8 @@ import { isPublishable } from './schemas/common';
 import type { ContentBundle } from './schemas/content';
 import type { Product } from './schemas/catalog';
 import type { Design } from './schemas/designs';
+import { productSearchFields } from './product-search';
+import { matchesSearch } from './text-search';
 
 const bySort = <T extends { sort: number }>(a: T, b: T) => a.sort - b.sort;
 
@@ -26,21 +28,13 @@ function publicDesign(design: Design): Design | null {
 
 const isPresent = <T>(value: T | null): value is T => value !== null;
 
-function matchesSearch(product: Product, search: string | undefined): boolean {
-  const needle = search?.trim().toLocaleLowerCase();
-  if (!needle) return true;
-  return (
-    product.name.ar.toLocaleLowerCase().includes(needle) ||
-    product.name.en.toLocaleLowerCase().includes(needle)
-  );
-}
-
 /**
  * Repositories over already-validated content held in memory.
  * Every result is a deep copy, so callers cannot change the underlying content.
  */
 export function createInMemoryRepositories(content: ContentBundle): Repositories {
   const categories = [...content.categories].sort(bySort);
+  const categoryById = new Map(categories.map((c) => [c.id, c]));
   const products = content.products.map(publicProduct).filter(isPresent).sort(bySort);
   const occasions = [...content.occasions].sort(bySort);
   const designs = content.designs.map(publicDesign).filter(isPresent).sort(bySort);
@@ -63,7 +57,7 @@ export function createInMemoryRepositories(content: ContentBundle): Repositories
           (p) =>
             (!category || p.categoryId === category.id) &&
             (!filter.availability || filter.availability.includes(p.availability)) &&
-            matchesSearch(p, filter.search),
+            matchesSearch(productSearchFields(p, categoryById.get(p.categoryId)), filter.search),
         ),
       );
     },

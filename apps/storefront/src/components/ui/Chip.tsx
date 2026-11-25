@@ -13,13 +13,18 @@ const base =
 const unselected = 'border-line bg-paper text-ink hover:border-rose';
 const selectedStyle = 'border-ink bg-ink text-paper';
 
+/** Chip styles, for links that look like chips (e.g. shop sections). */
+export function chipClassName(selected = false, className?: string): string {
+  return cn(base, selected ? selectedStyle : unselected, className);
+}
+
 /** A selectable filter option. */
 export function Chip({ selected = false, className, type = 'button', ...props }: ChipProps) {
   return (
     <button
       type={type}
       aria-pressed={selected}
-      className={cn(base, selected ? selectedStyle : unselected, className)}
+      className={chipClassName(selected, className)}
       {...props}
     />
   );

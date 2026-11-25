@@ -82,6 +82,19 @@ export function describeRepositoryContract(
         expect(await catalog.listProducts({ search: 'zzz-no-such-name' })).toEqual([]);
         expect(await catalog.listProducts({ search: '   ' })).toEqual(all);
       });
+
+      it("also finds products by their category's name, in both languages", async () => {
+        const { catalog } = await createRepositories();
+        for (const category of await catalog.listCategories()) {
+          const inCategory = (await catalog.listProducts({ categorySlug: category.slug })).map(
+            (p) => p.id,
+          );
+          for (const name of [category.name.ar, category.name.en.toUpperCase()]) {
+            const found = (await catalog.listProducts({ search: name })).map((p) => p.id);
+            expect(found).toEqual(expect.arrayContaining(inCategory));
+          }
+        }
+      });
     });
 
     describe('designs', () => {

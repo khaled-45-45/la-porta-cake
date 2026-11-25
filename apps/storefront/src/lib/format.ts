@@ -16,6 +16,23 @@ export function formatNumber(
   return new Intl.NumberFormat(numberLocale(locale), options).format(value);
 }
 
+/**
+ * A time of day ("23:00") as people say it, with Western digits:
+ * "11 PM" in English, "11 م" in Arabic. Minutes appear only when not on the hour.
+ */
+export function formatTimeOfDay(time: string, locale: Locale): string {
+  const [hours, minutes] = time.split(':').map(Number);
+  if (hours === undefined || minutes === undefined || Number.isNaN(hours + minutes)) {
+    throw new Error(`Invalid time of day "${time}", expected HH:MM.`);
+  }
+  return new Intl.DateTimeFormat(numberLocale(locale), {
+    hour: 'numeric',
+    minute: minutes === 0 ? undefined : '2-digit',
+    hour12: true,
+    timeZone: 'UTC',
+  }).format(new Date(Date.UTC(2000, 0, 1, hours, minutes)));
+}
+
 /** A price in Jordanian dinars, e.g. "12.5 JOD" or "12.5 د.أ.". Up to 3 decimals (fils). */
 export function formatPriceJod(value: number, locale: Locale): string {
   return formatNumber(value, locale, {

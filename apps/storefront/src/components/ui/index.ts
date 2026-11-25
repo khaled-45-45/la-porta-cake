@@ -3,7 +3,7 @@ export { ArchFrame } from './ArchFrame';
 export { AvailabilityBadge } from './AvailabilityBadge';
 export { Button, buttonClassName } from './Button';
 export type { ButtonProps, ButtonSize, ButtonVariant } from './Button';
-export { Chip } from './Chip';
+export { Chip, chipClassName } from './Chip';
 export { Field, Input, Label, Textarea } from './Field';
 export type { FieldControlProps } from './Field';
 export { ImagePlaceholder } from './ImagePlaceholder';

@@ -6,9 +6,11 @@ import type { ReactNode } from 'react';
 
 import { directionFor } from '@la-porta/domain/locale';
 
+import { SiteFooter, SiteHeader } from '@/components/site';
 import { SkipLink } from '@/components/ui';
 import { fontVariables } from '@/fonts';
 import { routing } from '@/i18n/routing';
+import { getRepositories } from '@/lib/data';
 
 import '../globals.css';
 
@@ -40,12 +42,20 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   // Lets server components read the locale during static rendering.
   setRequestLocale(locale);
 
+  const repositories = getRepositories();
+  const [settings, categories] = await Promise.all([
+    repositories.site.getSettings(),
+    repositories.catalog.listCategories(),
+  ]);
+
   return (
     <html lang={locale} dir={directionFor(locale)} className={fontVariables}>
-      <body className="min-h-screen bg-cream text-ink antialiased">
+      <body className="flex min-h-screen flex-col bg-cream text-ink antialiased">
         <NextIntlClientProvider>
           <SkipLink />
+          <SiteHeader whatsappUrl={settings.whatsapp.url} />
           {children}
+          <SiteFooter settings={settings} categories={categories} />
         </NextIntlClientProvider>
       </body>
     </html>

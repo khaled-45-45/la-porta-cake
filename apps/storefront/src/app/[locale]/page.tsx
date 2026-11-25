@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { isLocale } from '@la-porta/domain/locale';
 
-import { Container, LanguageSwitcher } from '@/components/ui';
+import { Container } from '@/components/ui';
 import { getRepositories } from '@/lib/data';
 
 interface PageProps {
@@ -23,11 +23,10 @@ export default async function PlaceholderPage({ params }: PageProps) {
   const name = isLocale(locale) ? settings.name[locale] : settings.name.ar;
 
   return (
-    <main id="main">
-      <Container className="flex min-h-screen flex-col items-center justify-center gap-5 text-center">
+    <main id="main" className="flex flex-1">
+      <Container className="flex flex-col items-center justify-center gap-5 py-24 text-center">
         <h1 className="m-0 text-display-xl">{name}</h1>
         <p className="m-0 max-w-[34em] text-lede text-muted">{t('body')}</p>
-        <LanguageSwitcher />
       </Container>
     </main>
   );

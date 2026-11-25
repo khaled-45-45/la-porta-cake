@@ -5,6 +5,7 @@
 
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { request } from 'node:http';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -35,6 +36,25 @@ async function get(path) {
   const res = await fetch(BASE + path, { redirect: 'manual' });
   const body = await res.text();
   return { status: res.status, headers: res.headers, body };
+}
+
+/** A GET sent exactly as written (no URL tidying), returning the raw body bytes. */
+function rawGet(path) {
+  return new Promise((resolvePromise, reject) => {
+    const req = request({ host: '127.0.0.1', port: PORT, path, method: 'GET' }, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () =>
+        resolvePromise({
+          status: res.statusCode ?? 0,
+          contentType: String(res.headers['content-type'] ?? ''),
+          body: Buffer.concat(chunks),
+        }),
+      );
+    });
+    req.on('error', reject);
+    req.end();
+  });
 }
 
 function htmlTag(body) {
@@ -120,6 +140,19 @@ async function run() {
     check(res.body.includes(`href="/${other}"`), `/${locale} links to /${other} in the switcher`);
     noCookie(res, `/${locale}`);
 
+    // Site shell (Phase 4): header navigation and the footer's verified contact links.
+    const nav = messages[locale].Nav;
+    check(
+      res.body.includes(`href="/${locale}/shop"`) && res.body.includes(`>${nav.shop}</a>`),
+      `/${locale} has the header navigation`,
+    );
+    check(
+      ['https://wa.me/962788890049', 'https://maps.app.goo.gl/MRRZ49LmJsrivkUa6'].every((url) =>
+        res.body.includes(url),
+      ),
+      `/${locale} has the footer's WhatsApp and map links`,
+    );
+
     const missing = await get(`/${locale}/missing`);
     const title = messages[locale].NotFound.title;
     check(missing.status === 404, `/${locale}/missing answers 404 (got ${missing.status})`);
@@ -136,11 +169,62 @@ async function run() {
   const arFr = await get('/ar/fr');
   check(arFr.status === 404, `/ar/fr answers 404 (got ${arFr.status})`);
 
-  const designSystem = await get('/ar/design-system');
+  // Product and design cards use next/image: approved photos are optimized, while private
+  // review files are never served, through the optimizer or directly.
+  const optimized = await get('/_next/image?url=%2Fimages%2Fproducts%2Fkitkat-cake.jpg&w=640&q=75');
   check(
-    designSystem.status === 404,
-    `/ar/design-system answers 404 in production (got ${designSystem.status})`,
+    optimized.status === 200 &&
+      optimized.headers.get('content-type')?.startsWith('image/') === true,
+    `the image optimizer serves an approved photo (got ${optimized.status})`,
   );
+  // Private review files and attempts to reach them through the optimizer or the static
+  // file server: path traversal (plain and encoded), relative and absolute paths, Windows
+  // backslashes, remote URLs. Each must be refused (4xx, or a 5xx from the optimizer for
+  // backslashes, where Next.js redirects its own internal request) and must never return
+  // image bytes. When the private files exist locally, the responses are also compared
+  // with them byte for byte. Requests are sent raw, so "../" is not tidied away first.
+  const privateFiles = [
+    'private-assets/review/products/despacito.jpg',
+    'private-assets/review/designs/space-cake.jpg',
+  ]
+    .map((file) => join(root, file))
+    .filter((file) => existsSync(file))
+    .map((file) => readFileSync(file));
+  const opt = (url) => `/_next/image?url=${url}&w=640&q=75`;
+  for (const path of [
+    opt('%2Fprivate-assets%2Freview%2Fproducts%2Fdespacito.jpg'),
+    opt('%2Fimages%2F..%2F..%2F..%2F..%2Fprivate-assets%2Freview%2Fproducts%2Fdespacito.jpg'),
+    opt(
+      '%2Fimages%2F%2E%2E%2F%2E%2E%2F%2E%2E%2F%2E%2E%2Fprivate-assets%2Freview%2Fdesigns%2Fspace-cake.jpg',
+    ),
+    opt('..%2F..%2Fprivate-assets%2Freview%2Fdesigns%2Fspace-cake.jpg'),
+    opt('%2F..%5C..%5Cprivate-assets%5Creview%5Cdesigns%5Cspace-cake.jpg'),
+    opt('%2Fimages%5C..%5C..%5C..%5C..%5Cprivate-assets%5Creview%5Cdesigns%5Cspace-cake.jpg'),
+    opt(encodeURIComponent(join(root, 'private-assets/review/designs/space-cake.jpg'))),
+    opt('%2F%2Fexample.com%2Fa.jpg'),
+    opt('https%3A%2F%2Fexample.com%2Fa.jpg'),
+    '/private-assets/review/products/despacito.jpg',
+    '/private-assets/review/manifest.json',
+    '/images/../private-assets/review/designs/space-cake.jpg',
+    '/images/%2e%2e/%2e%2e/private-assets/review/designs/space-cake.jpg',
+    '/images/..%2f..%2fprivate-assets%2freview%2fdesigns%2fspace-cake.jpg',
+  ]) {
+    const res = await rawGet(path);
+    const leaked = privateFiles.some((file) => res.body.length > 0 && res.body.equals(file));
+    check(
+      res.status >= 400 && !res.contentType.startsWith('image/') && !leaked,
+      `refused, no private bytes: ${path} (got ${res.status} ${res.contentType || '-'})`,
+    );
+  }
+  console.log(
+    `  info  byte comparison with ${privateFiles.length} private file(s) present locally` +
+      (privateFiles.length === 0 ? ' (fresh clone: status and type checks only)' : ''),
+  );
+
+  for (const path of ['/ar/design-system', '/en/design-system/composites']) {
+    const preview = await get(path);
+    check(preview.status === 404, `${path} answers 404 in production (got ${preview.status})`);
+  }
 }
 
 const server = spawn(

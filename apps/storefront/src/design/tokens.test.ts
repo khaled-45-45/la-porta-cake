@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-import { colors, textColorPairs } from './tokens';
+import { colors, focusRingPairs, textColorPairs } from './tokens';
 
 const css = readFileSync(fileURLToPath(new URL('../app/globals.css', import.meta.url)), 'utf8');
 
@@ -36,6 +36,10 @@ describe('design tokens', () => {
       ok: '#2e6a3e',
       pre: '#8a570c',
       off: '#6b6360',
+      'on-ink': '#e9e0da',
+      'on-ink-muted': '#cfc4be',
+      'on-ink-faint': '#a99e98',
+      'ink-line': '#2b2523',
     });
   });
 
@@ -49,5 +53,20 @@ describe('design tokens', () => {
 
   it.each(textColorPairs)('%s on %s meets WCAG AA contrast (%s)', (text, background) => {
     expect(contrast(colors[text], colors[background])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it.each(focusRingPairs)('%s focus ring on %s reaches 3:1 (%s)', (ring, background) => {
+    expect(contrast(colors[ring], colors[background])).toBeGreaterThanOrEqual(3);
+  });
+
+  it('draws focus rings from --focus-ring, switched to rose-soft in dark areas', () => {
+    expect(css).toContain('outline: 3px solid var(--focus-ring, var(--color-rose-ink));');
+    expect(css.replace(/\s+/g, ' ')).toContain(
+      '@utility focus-ring-on-dark { --focus-ring: var(--color-rose-soft); }',
+    );
+  });
+
+  it('would fail with the old rose-ink ring on ink (regression guard)', () => {
+    expect(contrast(colors['rose-ink'], colors.ink)).toBeLessThan(3);
   });
 });

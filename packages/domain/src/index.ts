@@ -1,6 +1,8 @@
 export { DEFAULT_LOCALE, LOCALES, directionFor, isLocale } from './locale';
 export type { Locale } from './locale';
 export { localeSchema } from './schemas/locale';
+export { productSearchFields } from './product-search';
+export { matchesSearch, normalizeSearchText } from './text-search';
 
 export {
   PRIVATE_REVIEW_IMAGE_PATTERN,

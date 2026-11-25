@@ -58,6 +58,107 @@
     "nameHint": "The name we write on the order.",
     "nameError": "Enter your name.",
     "notesLabel": "Notes",
-    "sampleProduct": "Cheesecake"
+    "sampleProduct": "Cheesecake",
+    "compositesTitle": "Composite components",
+    "compositesNote": "Internal preview of the site components with real repository data. Development only.",
+    "header": "Header and menu",
+    "footer": "Footer",
+    "productCards": "Product cards",
+    "legend": "Availability legend",
+    "catalog": "Shop browser",
+    "gallery": "Design gallery",
+    "breadcrumbs": "Breadcrumbs",
+    "categoryNav": "Shop sections",
+    "emptyState": "Empty state",
+    "loading": "Loading",
+    "ctaBand": "Call-to-action band",
+    "ctaTitle": "Want a custom design for your occasion?",
+    "ctaBody": "Sugar-paste and printed-photo cakes are made to order. See our work and pick “I want one like this”.",
+    "sampleCrumbProduct": "Lotus cake"
+  },
+  "Nav": {
+    "label": "Main",
+    "home": "Home",
+    "shop": "Shop",
+    "customOrder": "Custom cakes",
+    "ourWork": "Our work",
+    "about": "About",
+    "faq": "Ordering & FAQ",
+    "contact": "Contact",
+    "brandSub": "Cakes, Russeifa",
+    "orderWhatsApp": "Order on WhatsApp",
+    "menu": "Menu"
+  },
+  "Footer": {
+    "tagline": "Celebration cakes and Western desserts in Russeifa.",
+    "instagram": "Instagram",
+    "visit": "Visit",
+    "contact": "Contact",
+    "pages": "Pages",
+    "hours": "Hours: {days}, {opens} to {closes}",
+    "days": {
+      "daily": "every day",
+      "satThu": "Saturday to Thursday",
+      "fri": "Friday"
+    },
+    "map": "See it on the map",
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "delivery": "Delivery available",
+    "copyright": "© {name}",
+    "paymentNote": "Prices in Jordanian dinars (JOD). Orders are confirmed on WhatsApp or Instagram. There is no online payment.",
+    "messenger": "Messenger"
+  },
+  "Breadcrumbs": {
+    "label": "Breadcrumb"
+  },
+  "States": {
+    "loading": "Loading…"
+  },
+  "Catalog": {
+    "searchLabel": "Search the shop",
+    "searchPlaceholder": "Search: Lotus, revani, petit four…",
+    "filterLabel": "Filter by section",
+    "sectionsLabel": "Shop sections",
+    "all": "All",
+    "readyOnly": "Ready only",
+    "count": "{count, plural, =0 {No items} one {1 item} other {{n} items}}",
+    "emptyTitle": "Nothing matches that search",
+    "emptyBody": "Try another word or show every section. If you want something we don’t list, order it as a custom cake.",
+    "showAll": "Show everything",
+    "customOrder": "Order a custom cake",
+    "legendLabel": "What the availability labels mean",
+    "legend": {
+      "ready": "In the shop today, as of our last update",
+      "preorder": "Order at least a day before pickup",
+      "unavailable": "Not available right now",
+      "seasonal": "Back in its season"
+    }
+  },
+  "Gallery": {
+    "filtersLabel": "Filter designs",
+    "decorationLabel": "Decoration",
+    "occasionLabel": "Occasion",
+    "allTypes": "All",
+    "allOccasions": "All occasions",
+    "decoration": {
+      "sugar": "Sugar paste",
+      "print": "Printed photo",
+      "cream": "Cream and writing"
+    },
+    "decorationNote": {
+      "sugar": "Figures modelled from sugar paste",
+      "print": "A picture on edible paper",
+      "cream": "Piped designs and lettering"
+    },
+    "miniOnly": "Mini cakes only",
+    "miniTag": "Mini",
+    "orderLikeThis": "I want one like this",
+    "orderLikeThisLabel": "I want one like this: {title}",
+    "count": "{count, plural, =0 {No designs} one {1 design} other {{n} designs}}",
+    "emptyTitle": "No designs match these filters yet",
+    "emptyBody": "Send us a photo of the cake you have in mind, and we’ll make it for you.",
+    "showAll": "Show all designs",
+    "orderYours": "Order your design"
   }
 }

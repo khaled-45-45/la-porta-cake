@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 import type { Locale } from '@la-porta/domain/locale';
 import { directionFor } from '@la-porta/domain/locale';
@@ -10,15 +10,20 @@ import en from '../../messages/en.json';
 
 const messages = { ar, en };
 
-/** Renders UI the way a page would: with the locale's messages and text direction. */
+/**
+ * Renders UI the way a page would: with the locale's messages and text direction.
+ * The provider is a wrapper, so `rerender` keeps it.
+ */
 export function renderWithLocale(ui: ReactElement, locale: Locale = 'ar') {
-  return render(
-    <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone="Asia/Amman">
-      <div dir={directionFor(locale)} lang={locale}>
-        {ui}
-      </div>
-    </NextIntlClientProvider>,
-  );
+  return render(ui, {
+    wrapper: ({ children }: { children: ReactNode }) => (
+      <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone="Asia/Amman">
+        <div dir={directionFor(locale)} lang={locale}>
+          {children}
+        </div>
+      </NextIntlClientProvider>
+    ),
+  });
 }
 
 /** Tailwind classes tied to left or right, which would break the other text direction. */

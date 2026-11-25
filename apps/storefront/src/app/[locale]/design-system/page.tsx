@@ -51,7 +51,7 @@ export default async function DesignSystemPage({ params }: PageProps) {
   const t = await getTranslations('DesignSystem');
 
   return (
-    <main id="main">
+    <main id="main" className="flex-1">
       <Container className="flex flex-col gap-12 py-16">
         <header className="flex flex-wrap items-start justify-between gap-4">
           <SectionHeading level={1} title={t('title')} lede={t('note')} />

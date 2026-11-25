@@ -23,6 +23,11 @@
   --color-pre: #8a570c;
   --color-off: #6b6360;
   --color-white: #ffffff;
+  /* Footer (prototype .ft): text and rules on the ink background. */
+  --color-on-ink: #e9e0da;
+  --color-on-ink-muted: #cfc4be;
+  --color-on-ink-faint: #a99e98;
+  --color-ink-line: #2b2523;
 
   --font-body: var(--font-plex-sans-arabic), 'Segoe UI', Tahoma, sans-serif;
   --font-latin: var(--font-marcellus), Georgia, serif;
@@ -34,6 +39,9 @@
 
   /* Page container width (prototype .wrap). */
   --container-site: 77.5rem;
+
+  /* The prototype swaps the desktop links for the menu button below 1100px (nav: variant). */
+  --breakpoint-nav: 68.75rem;
 }
 
 /* Heading font follows the page direction: Reem Kufi for Arabic, Marcellus for English. */
@@ -87,6 +95,15 @@
     font-size: 1.0625rem;
   }
 }
+/*
+ * Focus rings inside dark areas (footer, ink bands): rose-ink is 2.87:1 on ink, below the
+ * 3:1 needed for a focus indicator (WCAG 1.4.11); rose-soft is 11.4:1. tokens.test.ts checks
+ * every ring colour against its background.
+ */
+@utility focus-ring-on-dark {
+  --focus-ring: var(--color-rose-soft);
+}
+
 @utility text-small {
   font-size: 0.875rem;
   line-height: 1.6;
@@ -101,8 +118,9 @@
     line-height: 1.75;
   }
 
+  /* Rose-ink on light backgrounds; dark areas switch it with focus-ring-on-dark. */
   :focus-visible {
-    outline: 3px solid var(--color-rose-ink);
+    outline: 3px solid var(--focus-ring, var(--color-rose-ink));
     outline-offset: 3px;
     border-radius: 6px;
   }

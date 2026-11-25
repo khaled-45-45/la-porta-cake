@@ -19,7 +19,10 @@ export interface ProductFilter {
   categorySlug?: string;
   /** Only products with one of these availability states. */
   availability?: readonly Availability[];
-  /** Case-insensitive match on the Arabic or English name. */
+  /**
+   * Every word must appear in the product's or its category's name, in Arabic or English
+   * (productSearchFields); ignores case, accents, Arabic diacritics and spelling variants.
+   */
   search?: string;
 }
 
