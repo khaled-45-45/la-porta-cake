@@ -18,7 +18,8 @@ la-porta-cake/  (local folder: "La Porta Web")
 │     │  ├─ i18n/                   routing, request config, navigation helpers
 │     │  ├─ lib/repositories/       factory and mock implementations
 │     │  ├─ lib/seo/, lib/utils/
-│     │  └─ middleware.ts
+│     │  ├─ fonts/                  self-hosted font files and licenses (decision 0011)
+│     │  └─ proxy.ts                locale routing (Next.js 16 name for middleware)
 │     ├─ messages/                  ar.json, en.json (interface text)
 │     ├─ public/images/             site/, products/, designs/
 │     └─ e2e/                       Playwright tests
@@ -194,9 +195,26 @@ See [content-gaps.md](content-gaps.md).
 | 0. Setup | pnpm installed, local Git, decision records, environment files | pnpm and Node 26 verified; engines enforced; decision records present; local Git initialised with no remote |
 | 1. Scaffold | Workspace, config package, domain package, Next.js app, Tailwind, CI definition | `pnpm install`, `typecheck`, `lint`, `test`, `build` pass on a clean clone |
 | 2. Domain and content | Schemas; 6 content files; image Tracks A and B | Content tests pass; all prices `null`; **Track A:** 48 of 48 assets exported or each failure reported, every exported image referenced, flagged images marked pending; **Track B:** 5 products use the placeholder, none uses another product's photo; content-gaps report updated |
-| 3. Locales and data access | next-intl routing, middleware, fonts, mock repositories | `/` redirects to `/ar`; `/ar` RTL, `/en` LTR; switcher keeps the page; repository tests pass |
-| 4. Design system | Tokens and components | Side-by-side parity with the prototype recorded; no axe critical issues |
+| 3. Foundations (revised 2026-11-25) | Localization; `/ar` and `/en` routing with `/` → `/ar`; RTL/LTR; data access layer with repository interfaces, local implementation, factory and contract tests; design tokens and UI primitives; dev-only design system preview. No real pages. | See "Phase 3 acceptance criteria" below |
+| 4. Site shell and composite components | Header, footer, mobile menu, product and design cards, filter panels | Side-by-side parity with the prototype recorded; no axe critical issues |
 | 5. Pages | Home, shop, categories, product, about, contact, FAQ | Parity in both languages at 4 widths; all links work; map is a link only |
 | 6. Ordering | Gallery, design pages, custom order, product ordering, send buttons, copy summary | WhatsApp message decodes to the expected text in both languages; Instagram and Messenger open; copy works |
 | 7. Quality | SEO, structured data, sitemap, e2e, accessibility, performance; Vercel readiness | Targets met; structured data valid; all tests green locally; no deployment without approval |
 | 8. Content and launch | Owner data, domain, hosting | Owner sign-off; no placeholder text visible except approved "Price on request" and product photo placeholders |
+
+### Phase 3 acceptance criteria (approved 2026-11-25)
+
+1. `pnpm check` and `pnpm verify:review-assets` pass, also on a fresh-clone copy (no private images, offline install).
+2. Routing, checked against the production build: `/` redirects (307) to `/ar`; `/ar` and `/en` return 200; `/fr` and `/ar/missing` end on the localized 404.
+3. `/ar` responds with `<html lang="ar" dir="rtl">`, `/en` with `<html lang="en" dir="ltr">`.
+4. The language switcher links to the same path in the other locale.
+5. `messages/ar.json` and `messages/en.json` have identical keys, no empty values, no Arabic letters in English.
+6. Numbers and prices use Western digits in both locales; `PriceTag` shows "السعر عند الطلب" / "Price on request" for a missing price.
+7. Repository interfaces live in `packages/domain`; no component imports a JSON file or a specific implementation (lint rule).
+8. The repository contract suite passes against the local repositories.
+9. The repositories return 21 active products, 16 published designs and only approved images; no pending image or unpublished design can come out of them.
+10. `DATA_SOURCE=local` is the default; unknown values and `api` fail at startup with a clear message; no server setting reaches the browser bundle.
+11. Tokens match the prototype; text colour pairs pass WCAG AA (4.5:1) in an automated test.
+12. Each primitive has tests for its variants, keyboard use, ARIA attributes and RTL/LTR where direction matters.
+13. The design system preview shows all tokens and primitives in both languages and returns 404 in the production build.
+14. No real pages are added; no business data or content is changed.

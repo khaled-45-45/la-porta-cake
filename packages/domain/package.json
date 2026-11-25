@@ -5,7 +5,9 @@
   "description": "La Porta Cake domain: schemas, types, repository interfaces and pure business functions.",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./locale": "./src/locale.ts",
+    "./testing": "./src/testing/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

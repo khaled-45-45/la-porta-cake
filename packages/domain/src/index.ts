@@ -1,5 +1,6 @@
-export { DEFAULT_LOCALE, LOCALES, directionFor, isLocale, localeSchema } from './locale';
+export { DEFAULT_LOCALE, LOCALES, directionFor, isLocale } from './locale';
 export type { Locale } from './locale';
+export { localeSchema } from './schemas/locale';
 
 export {
   PRIVATE_REVIEW_IMAGE_PATTERN,
@@ -45,3 +46,13 @@ export type { ContentBundle } from './schemas/content';
 
 export { reviewEntrySchema, reviewManifestSchema } from './schemas/review';
 export type { ReviewEntry, ReviewManifest } from './schemas/review';
+
+export type {
+  CatalogRepository,
+  DesignFilter,
+  DesignRepository,
+  ProductFilter,
+  Repositories,
+  SiteRepository,
+} from './repositories';
+export { createInMemoryRepositories } from './in-memory-repositories';

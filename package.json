@@ -17,8 +17,9 @@
     "test": "pnpm -r --if-present test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
-    "verify:review-assets": "node scripts/verify-review-assets.mjs"
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:routes",
+    "verify:review-assets": "node scripts/verify-review-assets.mjs",
+    "test:routes": "node scripts/check-routes.mjs"
   },
   "devDependencies": {
     "@la-porta/config": "workspace:*",

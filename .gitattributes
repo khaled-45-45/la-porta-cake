@@ -10,3 +10,9 @@
 *.ico  binary
 *.woff binary
 *.woff2 binary
+*.ttf  binary
+*.otf  binary
+
+# Font licences are kept exactly as published upstream (the SIL OFL text has a trailing
+# space), so whitespace checks skip them.
+OFL.txt -whitespace

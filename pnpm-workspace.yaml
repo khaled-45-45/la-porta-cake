@@ -6,3 +6,10 @@ packages:
 
 # Refuse to install when Node.js or pnpm do not match "engines" in package.json.
 engineStrict: true
+
+# Install scripts of dependencies are blocked unless listed here.
+# next-intl brings these two for its optional message extraction, which this project
+# does not use. Their prebuilt binaries are installed without running the scripts.
+allowBuilds:
+  '@parcel/watcher': false
+  '@swc/core': false

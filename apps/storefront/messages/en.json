@@ -1,0 +1,63 @@
+{
+  "Metadata": {
+    "siteName": "La Porta Cake",
+    "description": "La Porta Cake, Russeifa, Zarqa."
+  },
+  "Shell": {
+    "skipToContent": "Skip to content"
+  },
+  "LanguageSwitcher": {
+    "label": "ع",
+    "description": "View this page in Arabic"
+  },
+  "Placeholder": {
+    "body": "The website is being built. This is a temporary page."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "body": "We couldn’t find this page. The link may be wrong, or the page may have moved.",
+    "backHome": "Back to the home page"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "body": "We couldn’t show this page.",
+    "retry": "Try again"
+  },
+  "Price": {
+    "onRequest": "Price on request"
+  },
+  "Availability": {
+    "ready": "Ready",
+    "preorder": "Preorder",
+    "unavailable": "Unavailable",
+    "seasonal": "Seasonal"
+  },
+  "ImagePlaceholder": {
+    "noPhoto": "No photo yet"
+  },
+  "DesignSystem": {
+    "title": "Design system",
+    "note": "Internal development page, not available in the production build.",
+    "colors": "Colours",
+    "typography": "Type",
+    "buttons": "Buttons",
+    "chips": "Chips",
+    "availability": "Availability",
+    "prices": "Prices",
+    "arch": "Arch",
+    "placeholder": "Missing photo",
+    "forms": "Form fields",
+    "sampleDisplay": "Fresh cakes in the shop every day, and designs made for your occasion",
+    "sampleLede": "Flavour cakes ready every day, plus sugar-paste and printed-photo cakes made to order.",
+    "sampleBody": "We update availability by hand. To check before you visit, message us.",
+    "browseCakes": "Browse cakes",
+    "orderWhatsApp": "Order on WhatsApp",
+    "birthday": "Birthday",
+    "graduation": "Graduation",
+    "nameLabel": "Your name",
+    "nameHint": "The name we write on the order.",
+    "nameError": "Enter your name.",
+    "notesLabel": "Notes",
+    "sampleProduct": "Cheesecake"
+  }
+}
