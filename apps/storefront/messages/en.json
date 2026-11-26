@@ -1,7 +1,8 @@
 {
   "Metadata": {
     "siteName": "La Porta Cake",
-    "description": "La Porta Cake, Russeifa, Zarqa."
+    "description": "La Porta Cake, Russeifa, Zarqa.",
+    "pageTitle": "{page} · {site}"
   },
   "Shell": {
     "skipToContent": "Skip to content"
@@ -9,9 +10,6 @@
   "LanguageSwitcher": {
     "label": "ع",
     "description": "View this page in Arabic"
-  },
-  "Placeholder": {
-    "body": "The website is being built. This is a temporary page."
   },
   "NotFound": {
     "title": "Page not found",
@@ -160,5 +158,73 @@
     "emptyBody": "Send us a photo of the cake you have in mind, and we’ll make it for you.",
     "showAll": "Show all designs",
     "orderYours": "Order your design"
+  },
+  "Home": {
+    "heroMeta": "Al-Tatweer Al-Hadari, Russeifa",
+    "heroTitle": "Fresh cakes in the shop every day, and designs made for your occasion",
+    "heroLede": "Flavour cakes ready every day, plus sugar-paste and printed-photo cakes made to order. Send us a photo of the cake you have in mind and we’ll make it for you.",
+    "browseCakes": "Browse cakes",
+    "availabilityNote": "We update availability by hand. To check before you visit, message us on <phone>{number}</phone>.",
+    "featuredTitle": "From the shop window",
+    "featuredLede": "Flavour cakes, ready in the shop at a fixed price.",
+    "featuredAll": "All flavour cakes",
+    "occasionTitle": "Cakes for gatherings and weddings",
+    "occasionBody": "A large strawberry and cream cake from our shop in Russeifa. Size and design depend on your occasion.",
+    "occasionCta": "Order a cake for your occasion",
+    "occasionMessage": "Hello La Porta, I’d like to order a cake for an occasion.",
+    "designsTitle": "Choose by occasion",
+    "designsLede": "Designs we’ve made for our customers. Pick one and tell us “I want one like this”.",
+    "decorTitle": "Sugar paste or printed photo",
+    "decorLede": "Both are made to order, but they do different jobs.",
+    "decorBody": {
+      "sugar": "Figures and shapes we model by hand from sugar paste, raised on the cake.",
+      "print": "Your picture printed on edible paper, flat on top of the cake."
+    },
+    "decorNote": {
+      "sugar": "Send us an idea or a reference photo.",
+      "print": "Send us the photo itself, at its best quality."
+    },
+    "doorsTitle": "Where to start",
+    "doorNote": {
+      "flavour-cakes": "Ready every day, at a fixed price",
+      "sweets": "Revani, Despacito, petit four and cake slices"
+    },
+    "visitTitle": "Visit us in Russeifa",
+    "visitAddress": "Address",
+    "visitMap": "Open in Google Maps",
+    "visitContact": "WhatsApp and phone",
+    "visitFollow": "Follow us",
+    "visitFollowBody": "We post our newest cakes on Instagram first."
+  },
+  "Shop": {
+    "title": "Shop",
+    "lede": "The flavour cakes and sweets we make in the shop. Tap any item to see the details and order on WhatsApp."
+  },
+  "CategoryPage": {
+    "statusNote": "Each item shows its status. We update it by hand during the day, so message us on <phone>{number}</phone> to be sure.",
+    "askWhatsApp": "Ask us on WhatsApp",
+    "askMessage": "Hello La Porta, I’d like to ask about {category}.",
+    "empty": "There’s nothing in this section right now.",
+    "group": {
+      "ready": "In the shop",
+      "preorder": "Made to order",
+      "seasonal": "Seasonal",
+      "unavailable": "Not available right now"
+    }
+  },
+  "Product": {
+    "leadDays": "{days, plural, one {Order at least a day ahead.} other {Order at least {n} days ahead.}}",
+    "leadHours": "{hours, plural, one {Order at least an hour ahead.} other {Order at least {n} hours ahead.}}",
+    "priceLabel": "Price",
+    "priceOnRequestNote": "The price shows here once the shop confirms it. If it isn’t shown, we’ll tell you on WhatsApp.",
+    "sizesTitle": "Sizes",
+    "sizeColumn": "Size",
+    "servingsColumn": "Serves",
+    "servings": "{n} people",
+    "instagram": "Message us on Instagram",
+    "orderNote": "A chat opens with the item’s name. We confirm the price and pickup time with you. There is no online payment.",
+    "whatsappMessage": "Hello La Porta, I’d like to order: {name}",
+    "relatedTitle": "You might also like",
+    "relatedAll": "Everything in this section"
   }
 }

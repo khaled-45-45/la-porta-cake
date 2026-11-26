@@ -10,3 +10,4 @@ export { ProductCard } from './ProductCard';
 export { ProductCatalog } from './ProductCatalog';
 export { PRODUCT_CARD_SIZES, ProductImage } from './ProductImage';
 export { ProductPrice } from './ProductPrice';
+export { ProductMenu } from './ProductMenu';

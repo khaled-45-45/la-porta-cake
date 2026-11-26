@@ -27,7 +27,10 @@ export interface CatalogEntry {
 }
 
 interface CatalogBrowserProps {
-  /** Category chips, in order. Names in the page's language. */
+  /**
+   * Category chips, in order. Names in the page's language. With a single category
+   * (a category page) the chips are left out.
+   */
   categories: readonly { id: string; name: string }[];
   entries: readonly CatalogEntry[];
   /** Page title and introduction, shown at the start of the row that holds the search. */
@@ -72,16 +75,18 @@ export function CatalogBrowser({
       </div>
 
       <FilterPanel className="flex-row flex-wrap items-center gap-2.5">
-        <ChoiceChips
-          label={t('filterLabel')}
-          className="gap-2.5"
-          options={[
-            { value: ALL, label: t('all') },
-            ...categories.map((c) => ({ value: c.id, label: c.name })),
-          ]}
-          value={filter.categoryId}
-          onChange={(categoryId) => update({ categoryId })}
-        />
+        {categories.length > 1 ? (
+          <ChoiceChips
+            label={t('filterLabel')}
+            className="gap-2.5"
+            options={[
+              { value: ALL, label: t('all') },
+              ...categories.map((c) => ({ value: c.id, label: c.name })),
+            ]}
+            value={filter.categoryId}
+            onChange={(categoryId) => update({ categoryId })}
+          />
+        ) : null}
         <ToggleField
           label={t('readyOnly')}
           checked={filter.readyOnly}

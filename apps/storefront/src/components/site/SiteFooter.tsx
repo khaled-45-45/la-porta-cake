@@ -1,14 +1,15 @@
 import { useLocale, useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
-import type { Category, OpeningHours, StoreSettings } from '@la-porta/domain';
+import type { Category, StoreSettings } from '@la-porta/domain';
 import type { Locale } from '@la-porta/domain/locale';
 import { DEFAULT_LOCALE, isLocale } from '@la-porta/domain/locale';
 
 import { buttonClassName, Container } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
-import { formatTimeOfDay } from '@/lib/format';
 import { routes } from '@/lib/routes';
+
+import { useOpeningHoursLines } from './OpeningHours';
 
 interface SiteFooterProps {
   /** Verified store details (Phase 2 content); nothing here is typed in by hand. */
@@ -16,8 +17,6 @@ interface SiteFooterProps {
   /** Shop categories, linked under "Pages". */
   categories: readonly Category[];
 }
-
-const DAY_KEYS = { daily: 'daily', 'sat-thu': 'satThu', fri: 'fri' } as const;
 
 function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -43,12 +42,7 @@ export function SiteFooter({ settings, categories }: SiteFooterProps) {
   const current = useLocale();
   const locale: Locale = isLocale(current) ? current : DEFAULT_LOCALE;
 
-  const hours = (h: OpeningHours) =>
-    t('hours', {
-      days: t(`days.${DAY_KEYS[h.days]}`),
-      opens: formatTimeOfDay(h.opens, locale),
-      closes: formatTimeOfDay(h.closes, locale),
-    });
+  const hourLines = useOpeningHoursLines(settings.hours);
 
   return (
     <footer className="bg-ink text-on-ink focus-ring-on-dark">
@@ -80,8 +74,8 @@ export function SiteFooter({ settings, categories }: SiteFooterProps) {
 
           <FooterColumn title={t('visit')}>
             <li>{settings.address[locale]}</li>
-            {settings.hours.map((h) => (
-              <li key={h.days}>{hours(h)}</li>
+            {hourLines.map((line) => (
+              <li key={line}>{line}</li>
             ))}
             <li>
               <a

@@ -42,7 +42,14 @@ export function ProductCatalog({
     const category = byId.get(product.categoryId);
     return {
       facets: productFacets(product, category),
-      card: <ProductCard product={product} category={category} eager={index < eagerCount} />,
+      card: (
+        <ProductCard
+          product={product}
+          // On a category page every card shares the category: no need to repeat it.
+          category={categories.length > 1 ? category : undefined}
+          eager={index < eagerCount}
+        />
+      ),
     };
   });
 

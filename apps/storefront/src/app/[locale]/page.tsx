@@ -1,33 +1,17 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 
-import { isLocale } from '@la-porta/domain/locale';
-
-import { Container } from '@/components/ui';
+import { HomeView } from '@/components/pages';
 import { getRepositories } from '@/lib/data';
+import { loadHome } from '@/lib/storefront';
 
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
 
-/**
- * Temporary page so /ar and /en can be tested (Phase 3).
- * Replaced by the real home page in Phase 5. Not indexed.
- */
-export default async function PlaceholderPage({ params }: PageProps) {
+/** The home page: /ar and /en. */
+export default async function HomePage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('Placeholder');
-
-  // The shop name comes through the data layer, proving it works end to end.
-  const settings = await getRepositories().site.getSettings();
-  const name = isLocale(locale) ? settings.name[locale] : settings.name.ar;
-
-  return (
-    <main id="main" className="flex flex-1">
-      <Container className="flex flex-col items-center justify-center gap-5 py-24 text-center">
-        <h1 className="m-0 text-display-xl">{name}</h1>
-        <p className="m-0 max-w-[34em] text-lede text-muted">{t('body')}</p>
-      </Container>
-    </main>
-  );
+  const data = await loadHome(getRepositories());
+  return <HomeView data={data} />;
 }

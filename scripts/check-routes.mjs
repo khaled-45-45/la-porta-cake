@@ -48,6 +48,7 @@ function rawGet(path) {
         resolvePromise({
           status: res.statusCode ?? 0,
           contentType: String(res.headers['content-type'] ?? ''),
+          headers: res.headers,
           body: Buffer.concat(chunks),
         }),
       );
@@ -97,6 +98,217 @@ function stop(server) {
       server.kill('SIGTERM');
     }
   }
+}
+
+// ---------------------------------------------------------------- storefront pages (Phase 5)
+
+const content = (file) => JSON.parse(readFileSync(join(app, 'src/content', file), 'utf8'));
+// Facet fields the shop and gallery filters may receive (docs/components.md).
+const ALLOWED_FACET_KEYS = new Set([
+  'id',
+  'categoryId',
+  'availability',
+  'searchText',
+  'decoration',
+  'occasionIds',
+  'isMini',
+]);
+// Internal field names and private markers that must never reach a page.
+const FORBIDDEN_IN_PAGES = [
+  'private-assets',
+  'review/',
+  'isPublished',
+  'isActive',
+  'sourceAssetId',
+  'prepLeadHours',
+  'defaultLeadHours',
+  'onlinePayment',
+  '"pending"',
+  '"reasons"',
+];
+
+/** The React Server Components payload embedded in a page (self.__next_f), decoded. */
+function flightPayload(html) {
+  return [...html.matchAll(/self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)/g)]
+    .map((m) => JSON.parse(`"${m[1]}"`))
+    .join('');
+}
+
+/** Everything a page exposes that it should not: returns a list of problems. */
+function exposureProblems(html, unpublished) {
+  const problems = [];
+  const payload = flightPayload(html);
+  if (payload.length === 0) problems.push('no RSC payload found to inspect');
+  for (const marker of FORBIDDEN_IN_PAGES) {
+    if (html.includes(marker) || payload.includes(marker)) problems.push(`contains ${marker}`);
+  }
+  for (const design of unpublished) {
+    for (const text of [
+      `/our-work/${design.slug}`,
+      `"${design.slug}"`,
+      design.title.ar,
+      design.title.en,
+    ]) {
+      if (html.includes(text) || payload.includes(text))
+        problems.push(`unpublished design ${design.slug}`);
+    }
+  }
+  for (const match of payload.matchAll(/"facets":\{([^{}]*)\}/g)) {
+    for (const key of match[1].matchAll(/"([A-Za-z]+)":/g)) {
+      if (!ALLOWED_FACET_KEYS.has(key[1])) problems.push(`facet field ${key[1]}`);
+    }
+  }
+  // Every image URL a browser could fetch: src, srcset/imageSrcSet candidates (images and
+  // their preload hints).
+  const urls = [
+    ...[...html.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map((m) => m[1]),
+    ...[...html.matchAll(/\s(?:srcset|srcSet|imageSrcSet|imagesrcset)="([^"]+)"/g)].flatMap((m) =>
+      m[1].split(',').map((candidate) => candidate.trim().split(/\s+/)[0]),
+    ),
+  ];
+  for (const url of urls) {
+    const decoded = decodeURIComponent(url.replaceAll('&amp;', '&'));
+    if (!/(^|url=)\/images\/(products|designs|site)\//.test(decoded))
+      problems.push(`image ${decoded}`);
+  }
+  return [...new Set(problems)];
+}
+
+/** Security headers from next.config.ts that every page must carry; returns what is missing. */
+const SECURITY_HEADERS = {
+  'content-security-policy': "frame-ancestors 'none'",
+  'x-frame-options': 'DENY',
+  'x-content-type-options': 'nosniff',
+  'referrer-policy': 'strict-origin-when-cross-origin',
+  'permissions-policy': 'camera=()',
+};
+function missingSecurityHeaders(headers) {
+  return Object.entries(SECURITY_HEADERS)
+    .filter(([name, expected]) => !(headers.get(name) ?? '').includes(expected))
+    .map(([name]) => name);
+}
+
+const h1Text = (html) =>
+  (html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
+
+async function checkStorefrontPages() {
+  console.log('Storefront pages');
+  const categories = content('categories.json');
+  const products = content('products.json').filter((p) => p.isActive);
+  const unpublished = content('designs.json').filter((d) => !d.isPublished);
+
+  // Self-test: the scan must catch leaks planted in a fake page, or its "ok" means nothing.
+  const planted = [
+    '<img src="/_next/image?url=%2Fprivate-assets%2Freview%2Fdesigns%2Fx.jpg&amp;w=640">',
+    '<img src="/images/products/ok.jpg" srcSet="/images/products/ok.jpg 1x, /_next/image?url=%2Fsecret%2Fy.jpg&amp;w=640 2x">',
+    `<script>self.__next_f.push([1,${JSON.stringify(
+      JSON.stringify({ facets: { id: 'x', isActive: true }, slug: unpublished[0]?.slug ?? 'x' }),
+    )}])</script>`,
+  ].join('');
+  const caught = exposureProblems(planted, unpublished).join(' | ');
+  check(
+    [
+      'private-assets',
+      'isActive',
+      'facet field isActive',
+      'unpublished design',
+      'image ',
+      'image /_next/image?url=/secret/y.jpg',
+    ].every((needle) => caught.includes(needle)),
+    `exposure scan catches planted leaks (self-test): ${caught}`,
+  );
+
+  for (const [locale, dir] of [
+    ['ar', 'rtl'],
+    ['en', 'ltr'],
+  ]) {
+    const pages = [
+      { path: '', h1: messages[locale].Home.heroTitle },
+      { path: '/shop', h1: messages[locale].Shop.title },
+      ...categories.map((c) => ({ path: `/shop/${c.slug}`, h1: c.name[locale] })),
+      ...products.map((p) => ({ path: `/products/${p.slug}`, h1: p.name[locale] })),
+    ];
+    const issues = [];
+    for (const page of pages) {
+      const path = `/${locale}${page.path}`;
+      const res = await get(path);
+      const tag = htmlTag(res.body);
+      if (res.status !== 200) issues.push(`${path}: status ${res.status}`);
+      if (!tag.includes(`lang="${locale}"`) || !tag.includes(`dir="${dir}"`)) {
+        issues.push(`${path}: <html> is not lang="${locale}" dir="${dir}"`);
+      }
+      if ((res.body.match(/<h1\b/g) ?? []).length !== 1)
+        issues.push(`${path}: not exactly one <h1>`);
+      if (h1Text(res.body) !== page.h1) issues.push(`${path}: <h1> is "${h1Text(res.body)}"`);
+      if (!res.body.includes('<main id="main"')) issues.push(`${path}: no <main id="main">`);
+      if (res.headers.get('set-cookie') !== null) issues.push(`${path}: sets a cookie`);
+      const missing = missingSecurityHeaders(res.headers);
+      if (missing.length) issues.push(`${path}: missing ${missing.join(', ')}`);
+      for (const problem of exposureProblems(res.body, unpublished))
+        issues.push(`${path}: ${problem}`);
+    }
+    check(
+      issues.length === 0,
+      `${pages.length} ${locale} storefront pages: 200, lang/dir, one <h1>, security headers, no private or unpublished data in HTML or RSC payload` +
+        (issues.length ? `\n        ${issues.slice(0, 12).join('\n        ')}` : ''),
+    );
+
+    // The product page's WhatsApp link carries the localized, encoded product name.
+    const kitkat = products.find((p) => p.slug === 'kitkat-cake');
+    if (kitkat) {
+      const page = await get(`/${locale}/products/kitkat-cake`);
+      const text = messages[locale].Product.whatsappMessage.replace('{name}', kitkat.name[locale]);
+      const expected = `https://wa.me/962788890049?text=${encodeURIComponent(text)}`;
+      check(
+        page.body.includes(`href="${expected}"`),
+        `/${locale}/products/kitkat-cake orders on WhatsApp with its name`,
+      );
+    }
+
+    // Unknown categories and products, and unpublished design slugs, answer "not found".
+    const title = messages[locale].NotFound.title;
+    for (const path of [
+      `/${locale}/shop/no-such-category`,
+      `/${locale}/products/no-such-product`,
+      `/${locale}/products/${unpublished[0]?.slug ?? 'space-cake'}`,
+      `/${locale}/shop/${products[0]?.slug ?? 'kitkat-cake'}`,
+    ]) {
+      const res = await get(path);
+      check(
+        res.status === 404 && res.body.includes(title),
+        `${path} answers 404 with "${title}" (got ${res.status})`,
+      );
+    }
+
+    // Malformed and unexpected paths, sent exactly as written: no lookup bypass, no
+    // reflected markup, and the security headers on the 404 page too.
+    for (const path of [
+      `/${locale}/products`,
+      `/${locale}/products/KITKAT-CAKE`,
+      `/${locale}/products/kitkat-cake/extra`,
+      `/${locale}/shop/flavour-cakes/extra`,
+      `/${locale}/products/kitkat-cake%2F..%2F..%2Fprivate-assets`,
+      `/${locale}/products/..%2F..%2Fprivate-assets%2Freview%2Fproducts%2Fdespacito.jpg`,
+      `/${locale}/shop/%3Cscript%3Ealert(1)%3C%2Fscript%3E`,
+      `/${locale}/products/%00`,
+    ]) {
+      const res = await rawGet(path);
+      const body = res.body.toString('utf8');
+      const missing = missingSecurityHeaders(new Map(Object.entries(res.headers)));
+      check(
+        res.status === 404 && !body.includes('<script>alert(1)') && missing.length === 0,
+        `${path} answers 404, reflects no markup, has security headers (got ${res.status}${missing.length ? `, missing ${missing.join(', ')}` : ''})`,
+      );
+    }
+  }
+
+  // The locale redirect and its target are covered too.
+  const home = await rawGet('/');
+  const missing = missingSecurityHeaders(new Map(Object.entries(home.headers)));
+  check(
+    home.status === 307 && missing.length === 0,
+    `/ redirect carries the security headers${missing.length ? ` (missing ${missing.join(', ')})` : ''}`,
+  );
 }
 
 async function run() {
@@ -168,6 +380,8 @@ async function run() {
   check(fr.headers.get('location')?.endsWith('/ar/fr') === true, '/fr redirects to /ar/fr');
   const arFr = await get('/ar/fr');
   check(arFr.status === 404, `/ar/fr answers 404 (got ${arFr.status})`);
+
+  await checkStorefrontPages();
 
   // Product and design cards use next/image: approved photos are optimized, while private
   // review files are never served, through the optimizer or directly.

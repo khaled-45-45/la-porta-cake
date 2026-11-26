@@ -25,6 +25,7 @@ Rules that apply to all of them:
 | `Field`, `Label`, `Input`, `Textarea` | Form controls with linked hints and errors |
 | `SkipLink`, `VisuallyHidden` | Accessibility helpers |
 | `LanguageSwitcher` | Same page in the other language |
+| `TextLink`, `textLinkClassName` | Inline link with the rose underline (prototype `.tlink`); internal paths keep the language (Phase 5) |
 
 ## Site shell (`components/site`, Phase 4)
 
@@ -35,6 +36,7 @@ Rules that apply to all of them:
 | `MainNav` | Desktop links from 1100px; `aria-current` on the current section |
 | `MobileMenu` | Menu button and panel below 1100px: a disclosure with `aria-expanded`, Escape to close, closes on navigation |
 | `SiteFooter` | Brand, visit details and hours, contact links, page links, payment note; all from the store settings |
+| `useOpeningHoursLines` | The opening hours as sentences, shared by the footer and the home page (Phase 5) |
 
 ## Products (`components/catalog`)
 
@@ -47,7 +49,8 @@ Rules that apply to all of them:
 | `AvailabilityLegend` | All states and their meaning |
 | `CategoryNav` | Chip-styled links between the shop and its categories |
 | `CatalogBrowser` | Client: search, category chips, "Ready only", live count, empty state |
-| `ProductCatalog` | Server entry point: renders the cards and hands them to `CatalogBrowser` |
+| `ProductCatalog` | Server entry point: renders the cards and hands them to `CatalogBrowser`. With a single category (a category page) the section chips are left out |
+| `ProductMenu` | A category grouped by availability: in the shop, made to order, seasonal (category layout `menu-list`, Phase 5) |
 
 ## Designs (`components/designs`)
 
@@ -80,9 +83,34 @@ Pending images, unpublished designs, inactive products and internal fields must 
 - `components/client-props.test.tsx`: the exact props passed to the two client components (`CatalogBrowser`, `DesignGallery`), with fixtures that include hidden records and with the real content. Only the filter fields (`id`, `categoryId`, `availability`, `searchText`; `id`, `decoration`, `occasionIds`, `isMini`) and category or occasion names may cross; the cards are server-rendered elements.
 - `components/exposure.test.tsx`: the rendered output of the real content has no private paths and none of the unpublished designs.
 - `pnpm test:routes`: browser bundles contain no zod, schemas or `DATA_SOURCE`; the image optimizer and the static file server refuse private files, including traversal and malformed paths.
+- `pnpm test:routes` (Phase 5): every storefront page in both languages (home, shop, each category, each product) is fetched from the production build. The HTML and the decoded React Server Components payload (`self.__next_f`) are searched for private paths, internal field names (`isPublished`, `isActive`, `sourceAssetId`, `prepLeadHours`, …), the slugs and titles of every unpublished design, facet fields outside the lists above, and image URLs (`src`, `srcset`, preload hints) outside `/images/`. A self-test plants leaks in a fake page first, so a passing scan means something. Malformed paths (wrong case, extra segments, encoded traversal, script in the path, null byte) must answer 404 without reflecting markup, and every page, 404 and the root redirect must carry the security headers.
+- `lib/storefront.test.ts`: the page loaders never return inactive products, unpublished designs or pending photos, both with a correct repository and with a deliberately faulty one that returns every stored record unfiltered.
 
-Planned for Phase 5, once `/shop`, `/shop/[category]` and `/our-work` exist: extend `pnpm test:routes` to fetch those pages in both languages from the production build and search the HTML, including the embedded React Server Components payload (`self.__next_f`), for `private-assets`, `review/`, `isPublished`, `isActive`, `sourceAssetId`, the slugs and titles of every unpublished design, and any facet field outside the lists above.
+## Pages (`components/pages`, `app/[locale]`, Phase 5)
+
+Each route is a thin server component: it loads data through a loader in `lib/storefront.ts` (repositories in, plain data out, visibility checked again, products reduced to their public photos) and renders a view from `components/pages`. Views only present: the product loader prepares the photos, the price to show and the lead time. Unknown categories and products, inactive products included, answer the localized "page not found"; all of them are built ahead of time (`dynamicParams = false`).
+
+| Route | View | Contents |
+|---|---|---|
+| `/ar`, `/en` | `HomeView` | Hero (prototype cakes), four ready flavour cakes, shop-window band, four published designs, sugar paste or printed photo, category doors, visit details |
+| `/[locale]/shop` | `ShopView` | Every public product with search, section chips and "Ready only"; availability legend |
+| `/[locale]/shop/[category]` | `CategoryView` | Breadcrumbs, description, WhatsApp question, section links; `flavour-wall` categories use the searchable grid, `menu-list` categories the availability menu |
+| `/[locale]/products/[slug]` | `ProductView` | Breadcrumbs, photo or placeholder, category, availability, description, lead time (made-to-order items), sizes table (only when sizes are recorded), price or "Price on request", WhatsApp and Instagram, related products |
+
+Content decisions, made from the data only (decision 0005):
+
+- Featured products: no "featured" flag exists, so the home page shows the first ready flavour cakes with a photo, in the shop's order, leaving out the two hero cakes (as the prototype does).
+- Featured designs: the first published designs, in order.
+- Lead time: shown for made-to-order items only, from the product's own value or the store default (24 hours, verified).
+- Sizes, servings, prices, ingredients and storage: none are recorded yet, so the prototype's sizes table and accordions are left out and prices read "Price on request".
+- The WhatsApp order message is localized and carries the product name: "مرحبا لابورتا، بدي أطلب: {name}" / "Hello La Porta, I’d like to order: {name}".
+
+Left out until their target pages exist (Phase 6): the prototype's custom-order steps, occasion circles and "see all our work" links, the flavour page's "custom design" band and the shop's gallery banner. The design cards' own "I want one like this" buttons and the header's links to pages not built yet still lead to "page not found" until then.
+
+## Security headers
+
+`next.config.ts` sends `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that turns off camera, microphone, location, payment, USB and topics, and a Content-Security-Policy limited to `frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'`. The CSP does not restrict scripts or styles, so it works with static pages; a script policy needs per-request nonces and is planned for Phase 7.
 
 ## Routes
 
-Links use the route plan in `lib/routes.ts` (blueprint section 8): `/shop`, `/shop/[category]`, `/products/[slug]`, `/our-work`, `/our-work/[slug]`, `/custom-order`, `/about`, `/faq`, `/contact`. The pages arrive in Phases 5 and 6; until then these links show the localized "page not found".
+Links use the route plan in `lib/routes.ts` (blueprint section 8): `/shop`, `/shop/[category]`, `/products/[slug]`, `/our-work`, `/our-work/[slug]`, `/custom-order`, `/about`, `/faq`, `/contact`. Phase 5 built the shop, category and product pages; the others arrive in Phase 6 and show the localized "page not found" until then.

@@ -11,3 +11,4 @@ export { LanguageSwitcher } from './LanguageSwitcher';
 export { Container, Section, SectionHeading } from './Layout';
 export type { SectionTone } from './Layout';
 export { PriceTag } from './PriceTag';
+export { TextLink, textLinkClassName } from './TextLink';
