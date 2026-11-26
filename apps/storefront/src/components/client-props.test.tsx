@@ -3,6 +3,11 @@ import { join } from 'node:path';
 
 import type { ReactElement } from 'react';
 
+// A test runs in Node, not in the browser bundle the rule protects.
+// eslint-disable-next-line @typescript-eslint/no-restricted-imports
+import { CUSTOM_ORDER_LIMITS } from '@la-porta/domain';
+
+import { loadCustomOrderPage } from '@/lib/custom-order';
 import { getRepositories } from '@/lib/data';
 import { INITIAL_PRODUCT_FILTER, matchesProductFilter, productFacets } from '@/lib/filters';
 import {
@@ -18,6 +23,8 @@ import { renderWithLocale } from '@/test/render';
 
 import { ProductCard, ProductCatalog } from './catalog';
 import { DesignCard, WorkGallery } from './designs';
+import { ChosenDesign } from './custom-order/ChosenDesign';
+import { CustomOrderView } from './pages';
 
 // What crosses the server/browser boundary. CatalogBrowser and DesignGallery are client
 // components: everything passed to them is serialized into the page. These tests capture
@@ -25,9 +32,14 @@ import { DesignCard, WorkGallery } from './designs';
 
 vi.mock('@/i18n/navigation', () => import('@/test/mock-navigation'));
 
-const captured: { catalog: Record<string, unknown>[]; gallery: Record<string, unknown>[] } = {
+const captured: {
+  catalog: Record<string, unknown>[];
+  gallery: Record<string, unknown>[];
+  order: Record<string, unknown>[];
+} = {
   catalog: [],
   gallery: [],
+  order: [],
 };
 vi.mock('@/components/catalog/CatalogBrowser', () => ({
   CatalogBrowser: (props: Record<string, unknown>) => {
@@ -36,9 +48,15 @@ vi.mock('@/components/catalog/CatalogBrowser', () => ({
   },
 }));
 vi.mock('@/components/designs/DesignGallery', () => ({
-  DECORATION_TYPES: ['sugar', 'print', 'cream'],
   DesignGallery: (props: Record<string, unknown>) => {
     captured.gallery.push(props);
+    return null;
+  },
+}));
+
+vi.mock('@/components/custom-order/CustomOrderForm', () => ({
+  CustomOrderForm: (props: Record<string, unknown>) => {
+    captured.order.push(props);
     return null;
   },
 }));
@@ -46,6 +64,7 @@ vi.mock('@/components/designs/DesignGallery', () => ({
 beforeEach(() => {
   captured.catalog = [];
   captured.gallery = [];
+  captured.order = [];
 });
 
 interface Entry {
@@ -282,5 +301,74 @@ describe('search: server (repository) and browser (filters) find the same produc
     const found = (await repositories.catalog.listProducts({ search: 'حلويات' })).map((p) => p.id);
     expect(found).toEqual(expect.arrayContaining(sweetsIds));
     expect(sweetsIds.length).toBeGreaterThan(0);
+  });
+});
+
+describe('props passed to CustomOrderForm (client)', () => {
+  const repositories = getRepositories();
+  // The design record (photo, review data, publication flag) stays on the server.
+  const INTERNAL =
+    /private-assets|review|isPublished|sourceAssetId|"src"|"alt"|"title"|occasionIds|\/images\/|"sort"/;
+
+  it.each(['ar', 'en'] as const)(
+    'passes the design as its slug only, with plain option lists (%s)',
+    async (locale) => {
+      const data = await loadCustomOrderPage(repositories, 'heart-with-sugar-roses');
+      renderWithLocale(
+        <CustomOrderView
+          data={data}
+          action={async () => ({ status: 'idle' })}
+          limits={CUSTOM_ORDER_LIMITS}
+        />,
+        locale,
+      );
+      const props = captured.order[0]!;
+      expect(definedKeys(props)).toEqual([
+        'action',
+        'chosenDesign',
+        'decorations',
+        'defaults',
+        'designSlug',
+        'earliestDate',
+        'latestDate',
+        'leadDays',
+        'limits',
+        'occasions',
+      ]);
+      expect(props.designSlug).toBe('heart-with-sugar-roses');
+      for (const occasion of props.occasions as Record<string, unknown>[]) {
+        expect(Object.keys(occasion).sort()).toEqual(['id', 'name']);
+      }
+      // The chosen design arrives as an element rendered on the server (ChosenDesign), as
+      // the gallery cards do; everything else is serialized for the browser.
+      expect((props.chosenDesign as ReactElement).type).toBe(ChosenDesign);
+      expect(source('custom-order/ChosenDesign.tsx')).not.toMatch(/['"]use client['"]/);
+      const serialized = JSON.stringify(props, (key, value: unknown) =>
+        key === 'chosenDesign' ? undefined : value,
+      );
+      expect(serialized).not.toMatch(INTERNAL);
+      expect(serialized).not.toContain(data.settings.whatsapp.number);
+    },
+  );
+
+  it('passes no design for an unpublished reference', async () => {
+    const raw = JSON.parse(
+      readFileSync(join(process.cwd(), 'src/content/designs.json'), 'utf8'),
+    ) as { slug: string; isPublished: boolean }[];
+    for (const { slug } of raw.filter((d) => !d.isPublished)) {
+      captured.order = [];
+      const data = await loadCustomOrderPage(repositories, slug);
+      renderWithLocale(
+        <CustomOrderView
+          data={data}
+          action={async () => ({ status: 'idle' })}
+          limits={CUSTOM_ORDER_LIMITS}
+        />,
+        'en',
+      );
+      expect(captured.order[0]!.designSlug).toBeNull();
+      expect(captured.order[0]!.chosenDesign).toBeUndefined();
+      expect(JSON.stringify(captured.order[0])).not.toContain(slug);
+    }
   });
 });

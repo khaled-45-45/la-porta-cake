@@ -43,3 +43,23 @@ export function formatPriceJod(value: number, locale: Locale): string {
     maximumFractionDigits: 3,
   });
 }
+
+/**
+ * A calendar date ("2026-12-05") with its weekday and Western digits:
+ * "Saturday 5 December 2026" in English, "السبت 5/12/2026" in Arabic (day/month/year,
+ * as written in Jordan; a numeric month avoids choosing between month-name traditions).
+ */
+export function formatDate(date: string, locale: Locale): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!match) throw new Error(`Invalid date "${date}", expected YYYY-MM-DD.`);
+  const value = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+  const [year, month, day] = [match[1], Number(match[2]), Number(match[3])];
+  const weekday = new Intl.DateTimeFormat(locale, { weekday: 'long', timeZone: 'UTC' }).format(
+    value,
+  );
+  if (locale === 'ar') return `${weekday} ${day}/${month}/${year}`;
+  const monthName = new Intl.DateTimeFormat(locale, { month: 'long', timeZone: 'UTC' }).format(
+    value,
+  );
+  return `${weekday} ${day} ${monthName} ${year}`;
+}

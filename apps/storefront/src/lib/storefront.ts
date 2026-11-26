@@ -241,3 +241,65 @@ export async function productSlugs(repositories: Repositories): Promise<string[]
 export async function categorySlugs(repositories: Repositories): Promise<string[]> {
   return (await repositories.catalog.listCategories()).map((c) => c.slug);
 }
+
+const RELATED_DESIGN_COUNT = 4;
+
+export interface GalleryData {
+  designs: Design[];
+  occasions: Occasion[];
+}
+
+/** The work gallery: every published design with a public photo. */
+export async function loadGallery(repositories: Repositories): Promise<GalleryData> {
+  const [designs, occasions] = await Promise.all([
+    repositories.designs.listDesigns(),
+    repositories.designs.listOccasions(),
+  ]);
+  return { designs: publicDesigns(designs), occasions };
+}
+
+export interface DesignPageData {
+  design: Design;
+  /** The occasions this design is tagged with, in the gallery's order. */
+  occasions: Occasion[];
+  /** All occasions, for the related designs' tags. */
+  allOccasions: Occasion[];
+  related: Design[];
+}
+
+/**
+ * Related designs: the same decoration first, then designs sharing an occasion, each
+ * group in the gallery's order. Published designs only.
+ */
+function relatedDesigns(design: Design, designs: readonly Design[]): Design[] {
+  const others = designs.filter((d) => d.id !== design.id);
+  const sameDecoration = others.filter((d) => d.decoration === design.decoration);
+  const sharedOccasion = others.filter(
+    (d) =>
+      d.decoration !== design.decoration &&
+      d.occasionIds.some((id) => design.occasionIds.includes(id)),
+  );
+  return [...sameDecoration, ...sharedOccasion].slice(0, RELATED_DESIGN_COUNT);
+}
+
+/** Null for an unknown or unpublished design: the page answers "not found". */
+export async function loadDesignPage(
+  repositories: Repositories,
+  slug: string,
+): Promise<DesignPageData | null> {
+  const { designs } = repositories;
+  const design = await designs.getDesignBySlug(slug);
+  if (!design || !isPublicDesign(design)) return null;
+  const [all, occasions] = await Promise.all([designs.listDesigns(), designs.listOccasions()]);
+  return {
+    design,
+    occasions: occasions.filter((o) => design.occasionIds.includes(o.id)),
+    allOccasions: occasions,
+    related: relatedDesigns(design, publicDesigns(all)),
+  };
+}
+
+/** Slugs of the published designs, for static generation. */
+export async function designSlugs(repositories: Repositories): Promise<string[]> {
+  return publicDesigns(await repositories.designs.listDesigns()).map((d) => d.slug);
+}

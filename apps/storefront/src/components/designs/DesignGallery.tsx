@@ -17,11 +17,10 @@ import { Button } from '@/components/ui';
 import { useSiteLocale } from '@/i18n/use-site-locale';
 import { cn } from '@/lib/cn';
 import type { All, DesignFacets, DesignFilterState } from '@/lib/filters';
-import { ALL, INITIAL_DESIGN_FILTER, matchesDesignFilter } from '@/lib/filters';
+import { ALL, DECORATION_TYPES, INITIAL_DESIGN_FILTER, matchesDesignFilter } from '@/lib/filters';
 import { formatNumber } from '@/lib/format';
 import { routes } from '@/lib/routes';
 
-export const DECORATION_TYPES: readonly DecorationType[] = ['sugar', 'print', 'cream'];
 const DECORATION_CHOICES: readonly (DecorationType | All)[] = [ALL, ...DECORATION_TYPES];
 
 export interface GalleryEntry {

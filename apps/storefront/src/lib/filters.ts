@@ -9,6 +9,9 @@ import { matchesSearch, normalizeSearchText, productSearchFields } from '@la-por
 export const ALL = 'all';
 export type All = typeof ALL;
 
+/** Decoration types in display order (gallery filters, the custom-order form). */
+export const DECORATION_TYPES: readonly DecorationType[] = ['sugar', 'print', 'cream'];
+
 // ---------------------------------------------------------------- products
 
 export interface ProductFacets {

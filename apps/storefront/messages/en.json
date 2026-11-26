@@ -226,5 +226,83 @@
     "whatsappMessage": "Hello La Porta, I’d like to order: {name}",
     "relatedTitle": "You might also like",
     "relatedAll": "Everything in this section"
+  },
+  "OurWork": {
+    "title": "Our work",
+    "lede": "Cakes we have made for our customers’ occasions. Pick a design and tap “I want one like this”; we’ll prepare a WhatsApp message with its name.",
+    "kindsTitle": "Kinds of decoration",
+    "ctaTitle": "Didn’t find what you had in mind?",
+    "ctaBody": "Tell us about the cake you want, and we’ll prepare a WhatsApp message with all the details.",
+    "ctaAction": "Order a custom cake"
+  },
+  "Design": {
+    "decorationLabel": "Decoration",
+    "occasionsLabel": "Suits",
+    "orderTitle": "Want a cake like this?",
+    "orderBody": "Fill in what you know, and we’ll prepare a WhatsApp message with the design’s name. We confirm the price, size and date with you in the chat.",
+    "orderCta": "I want one like this",
+    "relatedTitle": "Similar designs",
+    "relatedAll": "All our work"
+  },
+  "CustomOrder": {
+    "title": "Design your cake",
+    "lede": "Fill in what you know. When you’re done, we prepare a WhatsApp message with a summary; you send it, and we take it from there in the chat.",
+    "paymentNote": "There is no payment on the site. We confirm the price and date with you in the chat before we start.",
+    "designTitle": "The design you chose",
+    "designChange": "Choose another design",
+    "designRemove": "No design",
+    "designUnavailable": "The design you chose is no longer in our gallery, so the message leaves it out.",
+    "formLabel": "Cake details",
+    "optional": "Optional",
+    "noChoice": "Not specified",
+    "fields": {
+      "occasion": "Occasion",
+      "decoration": "Decoration",
+      "decorationHint": "See examples in our work",
+      "mini": "Mini cake",
+      "description": "What cake do you have in mind?",
+      "descriptionHint": "For example the colours, the shape and the idea.",
+      "descriptionHintDesign": "Any change you’d like to the design.",
+      "flavour": "Filling or flavour",
+      "flavourHint": "The flavour you’d like.",
+      "writing": "Writing on the cake",
+      "writingHint": "Keep it short so it reads clearly.",
+      "date": "Requested pick-up date",
+      "dateHint": "{days, plural, one {We need your order at least a day ahead.} other {We need your order at least {n} days ahead.}}",
+      "name": "Name",
+      "notes": "Notes",
+      "notesHint": "Anything else we should know."
+    },
+    "count": "{count} of {max}",
+    "photoNote": "Have a photo of a cake you liked, or of the picture to print? The link can’t carry photos, so send it in the chat once it opens.",
+    "submit": "Prepare WhatsApp message",
+    "preparing": "Preparing the message…",
+    "errorSummary": "Please fix the following before we prepare the message:",
+    "errors": {
+      "descriptionRequired": "Tell us about the cake you have in mind, or choose a design from our work.",
+      "tooLong": "Keep it to {max} characters.",
+      "tooSoon": "The earliest date we can do is {date}.",
+      "tooFar": "Choose a date up to {date}.",
+      "invalidDate": "Choose the date from the calendar.",
+      "invalidChoice": "Choose an option from the list."
+    },
+    "readyTitle": "Your message is ready, but not sent yet",
+    "readyBody": "Open WhatsApp and send it. Your order is only confirmed when we reply in the chat with the price and date.",
+    "openWhatsApp": "Open WhatsApp and send the message",
+    "previewLabel": "Message text",
+    "readyEdit": "Want to change something? Edit the details above and prepare the message again.",
+    "message": {
+      "intro": "Hello La Porta, I’d like to ask about a custom cake.",
+      "introDesign": "Hello La Porta, I’d like a cake like this design from your gallery: {title}",
+      "occasion": "Occasion",
+      "decoration": "Decoration",
+      "mini": "Mini cake",
+      "flavour": "Flavour",
+      "writing": "Writing on the cake",
+      "date": "Requested date",
+      "name": "Name",
+      "description": "Details",
+      "notes": "Notes"
+    }
   }
 }

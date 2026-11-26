@@ -1,12 +1,10 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { getRepositories } from '@/lib/data';
 import { loadCategoryPage, loadHome, loadProductPage, loadShop } from '@/lib/storefront';
 import { product } from '@/test/fixtures';
+import { expectNothingPrivate } from '@/test/exposure';
 import { setPathname } from '@/test/mock-navigation';
 import { allClassNames, PHYSICAL_DIRECTION_CLASS, renderWithLocale } from '@/test/render';
 
@@ -26,30 +24,6 @@ const [home, shop, flavourCakes, sweets, kitkat, cheesecake, despacito] = await 
 ]);
 if (!flavourCakes || !sweets || !kitkat || !cheesecake || !despacito) {
   throw new Error('Real content is missing an expected page.');
-}
-
-const unpublished = (
-  JSON.parse(readFileSync(join(process.cwd(), 'src/content/designs.json'), 'utf8')) as {
-    slug: string;
-    isPublished: boolean;
-    title: { ar: string; en: string };
-  }[]
-).filter((d) => !d.isPublished);
-
-/** Nothing private, unpublished or internal in what a page renders. */
-function expectNothingPrivate(container: HTMLElement) {
-  const html = container.innerHTML;
-  expect(html).not.toMatch(/private-assets|review\/|isActive|isPublished|sourceAssetId/);
-  for (const d of unpublished) {
-    expect(html).not.toContain(`/our-work/${d.slug}`);
-    expect(container).not.toHaveTextContent(d.title.ar);
-    expect(container).not.toHaveTextContent(d.title.en);
-  }
-  for (const img of container.querySelectorAll('img')) {
-    expect(decodeURIComponent(img.getAttribute('src') ?? '')).toMatch(
-      /\/images\/(products|designs|site)\//,
-    );
-  }
 }
 
 const headings = (level: number) =>

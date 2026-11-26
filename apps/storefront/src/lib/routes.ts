@@ -1,7 +1,7 @@
 /**
  * Site paths without the language prefix; the i18n Link adds /ar or /en.
- * Route plan from the V1 blueprint (section 8). The pages themselves arrive in Phases 5–6,
- * so until then these links answer with the localized "page not found".
+ * Route plan from the V1 blueprint (section 8). About, FAQ and contact arrive in a later phase,
+ * so until then those links answer with the localized "page not found".
  */
 export const routes = {
   home: '/',
@@ -11,6 +11,8 @@ export const routes = {
   ourWork: '/our-work',
   design: (slug: string) => `/our-work/${slug}`,
   customOrder: '/custom-order',
+  /** The custom-order form for a gallery design. The page checks the design again. */
+  customOrderFor: (designSlug: string) => `/custom-order?design=${encodeURIComponent(designSlug)}`,
   about: '/about',
   faq: '/faq',
   contact: '/contact',

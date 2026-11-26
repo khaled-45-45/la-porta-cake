@@ -58,3 +58,21 @@ export type {
   SiteRepository,
 } from './repositories';
 export { createInMemoryRepositories } from './in-memory-repositories';
+
+export {
+  CUSTOM_ORDER_LIMITS,
+  MAX_DAYS_AHEAD,
+  earliestOrderDate,
+  latestOrderDate,
+  normalizeLine,
+  normalizeText,
+  parseCustomOrder,
+  parseDesignReference,
+} from './custom-order';
+export type {
+  CustomOrderErrorCode,
+  CustomOrderField,
+  CustomOrderParseResult,
+  CustomOrderRequest,
+  CustomOrderValues,
+} from './custom-order';

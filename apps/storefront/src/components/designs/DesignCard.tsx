@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import type { Design, Occasion } from '@la-porta/domain';
 
 import { Button } from '@/components/ui';
+import { Link } from '@/i18n/navigation';
 import { useSiteLocale } from '@/i18n/use-site-locale';
 import { isPublicDesign } from '@/lib/catalog';
 import { cn } from '@/lib/cn';
@@ -26,7 +27,8 @@ interface DesignCardProps {
 
 /**
  * A cake from the work gallery (prototype .card): photo, decoration type, title, occasion
- * tags and the "I want one like this" button, which opens the design's page.
+ * tags and the "I want one like this" button. The title links to the design's page; the
+ * button opens the custom-order form with this design chosen.
  *
  * Draws nothing for an unpublished design or one whose photo is not public, so a pending
  * image can never reach a page even if a data source passes one by mistake.
@@ -70,10 +72,17 @@ export function DesignCard({
         <span className="text-[0.8125rem] font-semibold text-rose-ink">
           {t(`decoration.${design.decoration}`)}
         </span>
-        <Heading className="m-0 font-display text-lg leading-[1.4]">{title}</Heading>
+        <Heading className="m-0 font-display text-lg leading-[1.4]">
+          <Link
+            href={routes.design(design.slug)}
+            className="text-ink no-underline hover:underline focus-visible:underline"
+          >
+            {title}
+          </Link>
+        </Heading>
         <OccasionTags occasions={tags} isMini={design.isMini} />
         <Button
-          href={routes.design(design.slug)}
+          href={routes.customOrderFor(design.slug)}
           size="sm"
           block
           aria-label={t('orderLikeThisLabel', { title })}

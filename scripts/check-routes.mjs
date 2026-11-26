@@ -311,6 +311,296 @@ async function checkStorefrontPages() {
   );
 }
 
+// ------------------------------------------------- gallery and custom orders (Phase 6)
+
+/** Checks shared by every page: returns a list of problems. */
+function pageProblems(path, res, { locale, dir, h1 }, unpublished) {
+  const problems = [];
+  const tag = htmlTag(res.body);
+  if (res.status !== 200) problems.push(`${path}: status ${res.status}`);
+  if (!tag.includes(`lang="${locale}"`) || !tag.includes(`dir="${dir}"`))
+    problems.push(`${path}: <html> is not lang="${locale}" dir="${dir}"`);
+  if ((res.body.match(/<h1\b/g) ?? []).length !== 1) problems.push(`${path}: not one <h1>`);
+  if (h1 && h1Text(res.body) !== h1) problems.push(`${path}: <h1> is "${h1Text(res.body)}"`);
+  if (!res.body.includes('<main id="main"')) problems.push(`${path}: no <main id="main">`);
+  if (res.headers.get('set-cookie') !== null) problems.push(`${path}: sets a cookie`);
+  const missing = missingSecurityHeaders(res.headers);
+  if (missing.length) problems.push(`${path}: missing ${missing.join(', ')}`);
+  for (const problem of exposureProblems(res.body, unpublished))
+    problems.push(`${path}: ${problem}`);
+  return problems;
+}
+
+const report = (problems) =>
+  problems.length ? `\n        ${problems.slice(0, 12).join('\n        ')}` : '';
+
+/** The hidden fields React renders for a server-action form, as name/value pairs. */
+function actionFields(html) {
+  const unescape = (value) =>
+    value.replaceAll('&quot;', '"').replaceAll('&#x27;', "'").replaceAll('&amp;', '&');
+  return [
+    ...html.matchAll(/<input type="hidden" name="(\$ACTION[^"]*)"(?: value="([^"]*)")?\/>/g),
+  ].map(([, name, value = '']) => [name, unescape(value)]);
+}
+
+/** Posts the custom-order form as a browser without JavaScript would. */
+async function postOrder(path, fields, { origin = BASE, hidden } = {}) {
+  const form = new FormData();
+  for (const [name, value] of hidden) form.append(name, value);
+  for (const [name, value] of fields) form.append(name, value);
+  const headers = origin === null ? {} : { Origin: origin };
+  const res = await fetch(BASE + path, { method: 'POST', body: form, headers, redirect: 'manual' });
+  return { status: res.status, headers: res.headers, body: await res.text() };
+}
+
+/** The prepared message in a response: the text of the ready panel's WhatsApp link. */
+function preparedMessage(html) {
+  const panel = html.split('id="order-ready-title"')[1] ?? '';
+  const href = panel.match(/href="(https:\/\/wa\.me\/[^"]+)"/)?.[1];
+  if (!href) return null;
+  const url = new URL(href.replaceAll('&amp;', '&'));
+  return { url, text: url.searchParams.get('text') };
+}
+
+async function checkGalleryAndCustomOrder() {
+  console.log('Gallery and custom orders');
+  const designs = content('designs.json');
+  const published = designs.filter((d) => d.isPublished);
+  const unpublished = designs.filter((d) => !d.isPublished);
+  const [first] = published;
+
+  for (const [locale, dir] of [
+    ['ar', 'rtl'],
+    ['en', 'ltr'],
+  ]) {
+    const m = messages[locale];
+    const expect = { locale, dir };
+
+    // Every page: the gallery, each published design, the custom-order form.
+    const pages = [
+      { path: '/our-work', h1: m.OurWork.title },
+      ...published.map((d) => ({ path: `/our-work/${d.slug}`, h1: d.title[locale] })),
+      { path: '/custom-order', h1: m.CustomOrder.title },
+      { path: `/custom-order?design=${first.slug}`, h1: m.CustomOrder.title },
+    ];
+    const problems = [];
+    for (const page of pages) {
+      const path = `/${locale}${page.path}`;
+      problems.push(
+        ...pageProblems(path, await get(path), { ...expect, h1: page.h1 }, unpublished),
+      );
+    }
+    check(
+      problems.length === 0,
+      `${pages.length} ${locale} gallery and order pages: 200, lang/dir, one <h1>, security headers, no private or unpublished data in HTML or RSC payload${report(problems)}`,
+    );
+
+    // The gallery lists every published design; each card links to its page and the form.
+    const gallery = await get(`/${locale}/our-work`);
+    const cards = [...gallery.body.matchAll(/data-design="([^"]+)"/g)].map((x) => x[1]);
+    check(
+      cards.length === published.length &&
+        published.every(
+          (d) =>
+            gallery.body.includes(`href="/${locale}/our-work/${d.slug}"`) &&
+            gallery.body.includes(`href="/${locale}/custom-order?design=${d.slug}"`),
+        ),
+      `/${locale}/our-work shows all ${published.length} published designs, each linking to its page and the order form (got ${cards.length})`,
+    );
+
+    // The form page: rendered per request, never cached; the design arrives as its slug.
+    const chosen = await get(`/${locale}/custom-order?design=${first.slug}`);
+    check(
+      /no-store/.test(chosen.headers.get('cache-control') ?? ''),
+      `/${locale}/custom-order is not cached (Cache-Control: ${chosen.headers.get('cache-control')})`,
+    );
+    check(
+      chosen.body.includes(`name="design" value="${first.slug}"`) &&
+        chosen.body.includes(first.title[locale]),
+      `/${locale}/custom-order?design=${first.slug} shows the design and carries its slug`,
+    );
+
+    // Tampered references: the page opens without a design and reflects nothing.
+    for (const query of [
+      `design=${unpublished[0]?.slug ?? 'space-cake'}`,
+      'design=no-such-design',
+      `design=${first.slug}&design=${first.slug}`,
+      `design=${first.slug.toUpperCase()}`,
+      'design=..%2F..%2Fprivate-assets%2Freview',
+      'design=%3Cscript%3Ealert(1)%3C%2Fscript%3E',
+      'design=https%3A%2F%2Fevil.example',
+      'design[]=x',
+    ]) {
+      const path = `/${locale}/custom-order?${query}`;
+      const res = await rawGet(path);
+      // Next.js keeps the request URL, still percent-encoded, in its router state
+      // ("c" and "q" in the RSC payload). That echo is removed first, so the scan still
+      // catches any decoded or rendered reflection of the value.
+      const body = res.body.toString('utf8').split(query).join('[query]');
+      const issues = pageProblems(
+        path,
+        { status: res.status, headers: new Map(Object.entries(res.headers)), body },
+        { ...expect, h1: m.CustomOrder.title },
+        unpublished,
+      ).filter((p) => !p.includes('sets a cookie'));
+      if (body.includes('name="design"')) issues.push('carries a design');
+      if (/<script>alert|evil\.example|private-assets/.test(body))
+        issues.push('reflects the query');
+      check(
+        issues.length === 0,
+        `${path} opens without a design and reflects nothing${report(issues)}`,
+      );
+    }
+
+    // Unknown and unpublished designs answer "not found", with the security headers.
+    for (const path of [
+      `/${locale}/our-work/${unpublished[0]?.slug ?? 'space-cake'}`,
+      `/${locale}/our-work/no-such-design`,
+      `/${locale}/our-work/${first.slug.toUpperCase()}`,
+      `/${locale}/our-work/${first.slug}/extra`,
+      `/${locale}/our-work/..%2F..%2Fprivate-assets`,
+    ]) {
+      const res = await rawGet(path);
+      const missing = missingSecurityHeaders(new Map(Object.entries(res.headers)));
+      check(
+        res.status === 404 && missing.length === 0,
+        `${path} answers 404 with the security headers (got ${res.status})`,
+      );
+    }
+  }
+
+  // The form posts without JavaScript (a server action): valid, invalid and hostile posts.
+  const path = `/ar/custom-order?design=${first.slug}`;
+  const hidden = actionFields((await get(path)).body);
+  check(hidden.length >= 2, `${path} renders a form that posts without JavaScript`);
+
+  const valid = await postOrder(
+    path,
+    [
+      ['design', first.slug],
+      ['writing', 'كل عام وأنت بخير'],
+    ],
+    {
+      hidden,
+    },
+  );
+  const prepared = preparedMessage(valid.body);
+  check(
+    valid.status === 200 &&
+      missingSecurityHeaders(valid.headers).length === 0 &&
+      prepared?.url.origin === 'https://wa.me' &&
+      prepared.url.pathname === '/962788890049' &&
+      [...prepared.url.searchParams.keys()].join() === 'text' &&
+      prepared.text.includes(first.title.ar) &&
+      prepared.text.includes('كل عام وأنت بخير'),
+    `a valid post returns the WhatsApp link to the verified number with the design and details (got ${valid.status})`,
+  );
+  // Only the result panel: the footer rightly says orders are confirmed over WhatsApp.
+  const panel = valid.body.split('id="order-ready-title"')[1]?.split('</form>')[0] ?? '';
+  check(
+    panel.includes(messages.ar.CustomOrder.readyTitle) &&
+      !/تم تأكيد|تم إرسال|تم الطلب|order (is|has been) (confirmed|placed|sent)/.test(panel),
+    'the result says the message is ready but not sent, and confirms no order',
+  );
+
+  const invalid = await postOrder(
+    path,
+    [
+      ['design', first.slug],
+      ['writing', 'ك'.repeat(41)],
+    ],
+    {
+      hidden,
+    },
+  );
+  check(
+    invalid.status === 200 &&
+      invalid.body.includes('id="order-error-summary"') &&
+      invalid.body.includes(`value="${'ك'.repeat(41)}"`) &&
+      preparedMessage(invalid.body) === null,
+    'an invalid post returns the errors and keeps the entered text, with no link',
+  );
+
+  const hiddenDesign = await postOrder(
+    path,
+    [
+      ['design', unpublished[0]?.slug ?? 'space-cake'],
+      ['description', 'كيكة'],
+    ],
+    { hidden },
+  );
+  const withoutDesign = preparedMessage(hiddenDesign.body);
+  check(
+    withoutDesign !== null &&
+      !unpublished.some((d) => withoutDesign.text.includes(d.title.ar)) &&
+      hiddenDesign.body.includes(messages.ar.CustomOrder.designUnavailable),
+    'a post naming an unpublished design leaves it out of the message and says so',
+  );
+
+  const markup = await postOrder(
+    path,
+    [
+      ['design', first.slug],
+      ['notes', '<img src=x onerror=alert(1)>'],
+      ['name', 'A&text=B#C'],
+    ],
+    { hidden },
+  );
+  const escaped = preparedMessage(markup.body);
+  check(
+    !markup.body.includes('<img src=x onerror') &&
+      escaped !== null &&
+      [...escaped.url.searchParams.keys()].join() === 'text' &&
+      escaped.text.includes('<img src=x onerror=alert(1)>') &&
+      escaped.text.includes('A&text=B#C'),
+    'posted markup and link characters stay text: escaped on the page, encoded in the link',
+  );
+
+  const tamperedLocale = hidden.map(([name, value]) => [
+    name,
+    value.replace('["ar",', '["<script>",'),
+  ]);
+  const fallback = await postOrder(path, [['design', first.slug]], { hidden: tamperedLocale });
+  check(
+    fallback.status === 200 &&
+      preparedMessage(fallback.body)?.text.startsWith('مرحبا لابورتا') === true &&
+      !fallback.body.includes('<script>",'),
+    'a tampered language argument falls back to Arabic',
+  );
+
+  for (const [label, options, fields] of [
+    ['another site', { origin: 'https://evil.example', hidden }, [['design', first.slug]]],
+    ['a body over 32 KB', { hidden }, [['notes', 'x'.repeat(40_000)]]],
+  ]) {
+    const res = await postOrder(path, fields, options);
+    check(
+      res.status !== 200 && preparedMessage(res.body) === null && !res.body.includes('wa.me'),
+      `a post from ${label} is refused (got ${res.status})`,
+    );
+  }
+
+  // Browsers always send Origin with a POST, so a post without one is not a cross-site
+  // request from a page; Next.js answers it. It gets the same checks as any other post,
+  // and the action stores and sends nothing, so there is nothing for it to abuse.
+  const noOrigin = await postOrder(
+    path,
+    [
+      ['design', first.slug],
+      ['writing', 'ك'.repeat(41)],
+    ],
+    {
+      origin: null,
+      hidden,
+    },
+  );
+  check(
+    noOrigin.status === 200 &&
+      noOrigin.body.includes('id="order-error-summary"') &&
+      preparedMessage(noOrigin.body) === null,
+    'a post without an Origin header (not a browser) gets the same validation',
+  );
+}
+
 async function run() {
   console.log('Static output');
   const staticDir = join(app, '.next/static');
@@ -382,6 +672,7 @@ async function run() {
   check(arFr.status === 404, `/ar/fr answers 404 (got ${arFr.status})`);
 
   await checkStorefrontPages();
+  await checkGalleryAndCustomOrder();
 
   // Product and design cards use next/image: approved photos are optimized, while private
   // review files are never served, through the optimizer or directly.

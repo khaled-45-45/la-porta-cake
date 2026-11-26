@@ -28,6 +28,14 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // The domain package ships TypeScript source; Next compiles it.
   transpilePackages: ['@la-porta/domain'],
+  experimental: {
+    serverActions: {
+      // The only server action is the custom-order form: about 1,200 characters of
+      // text at most. 32 KB leaves room for Arabic text (several bytes per character)
+      // and form encoding, and refuses anything larger before it is parsed.
+      bodySizeLimit: '32kb',
+    },
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

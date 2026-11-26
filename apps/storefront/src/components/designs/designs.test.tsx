@@ -23,7 +23,12 @@ describe('DesignCard', () => {
     expect(within(card).getByRole('listitem')).toHaveTextContent('عيد ميلاد');
     const order = within(card).getByRole('link', { name: 'بدي زيه: كيكة الورد' });
     expect(order).toHaveTextContent('بدي زيه');
-    expect(order).toHaveAttribute('href', '/current/our-work/rose-cake');
+    // The button opens the custom-order form with this design; the title opens its page.
+    expect(order).toHaveAttribute('href', '/current/custom-order?design=rose-cake');
+    expect(within(card).getByRole('link', { name: 'كيكة الورد' })).toHaveAttribute(
+      'href',
+      '/current/our-work/rose-cake',
+    );
   });
 
   it('adds the "Mini" tag to mini cakes', () => {

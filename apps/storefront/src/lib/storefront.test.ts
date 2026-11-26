@@ -16,8 +16,11 @@ import {
 
 import {
   categorySlugs,
+  designSlugs,
   leadHours,
   loadCategoryPage,
+  loadDesignPage,
+  loadGallery,
   loadHome,
   loadProductPage,
   loadShop,
@@ -309,5 +312,98 @@ describe('whatsappOrderUrl', () => {
     for (const bad of ['0788890049', '+962788890049', '962-788', 'evil.com/x', '']) {
       expect(() => whatsappOrderUrl(bad, 'x')).toThrow(/digits only/);
     }
+  });
+});
+
+describe('gallery loaders', () => {
+  it('lists published designs with public photos, with every occasion', async () => {
+    for (const source of [repositories, raw]) {
+      const data = await loadGallery(source);
+      expect(data.designs.map((d) => d.slug)).toEqual(['rose', 'grad', 'sugar']);
+      expect(data.occasions).toEqual([birthday, graduation]);
+    }
+  });
+
+  it('drops a published design whose photo is not public', async () => {
+    const leaky: Repositories = {
+      ...raw,
+      designs: {
+        ...raw.designs,
+        listDesigns: async () => [
+          design({ slug: 'pending-photo', image: image('/images/designs/x.jpg', 'pending') }),
+          design({ slug: 'private-path', image: image('private-assets/review/designs/x.jpg') }),
+        ],
+      },
+    };
+    expect((await loadGallery(leaky)).designs).toEqual([]);
+    expect(await designSlugs(leaky)).toEqual([]);
+  });
+
+  it('loads a design with its occasions and related published designs', async () => {
+    const data = await loadDesignPage(repositories, 'rose');
+    expect(data?.design.slug).toBe('rose');
+    expect(data?.occasions).toEqual([birthday]);
+    // No other cream design: designs sharing the birthday occasion follow.
+    expect(data?.related.map((d) => d.slug)).toEqual(['sugar']);
+  });
+
+  it('puts designs with the same decoration first among related ones', async () => {
+    const source = createInMemoryRepositories({
+      ...bundle,
+      designs: [
+        design({ id: 'a', slug: 'a', sort: 0, decoration: 'sugar' }),
+        design({ id: 'b', slug: 'b', sort: 1, decoration: 'cream' }),
+        design({ id: 'c', slug: 'c', sort: 2, decoration: 'sugar', occasionIds: ['graduation'] }),
+        design({ id: 'd', slug: 'd', sort: 3, decoration: 'print', occasionIds: ['graduation'] }),
+      ],
+    });
+    expect((await loadDesignPage(source, 'a'))?.related.map((d) => d.slug)).toEqual(['c', 'b']);
+  });
+
+  it('answers null for unknown and unpublished designs, even from a faulty source', async () => {
+    for (const source of [repositories, raw]) {
+      expect(await loadDesignPage(source, 'hidden-design')).toBeNull();
+      expect(await loadDesignPage(source, 'nope')).toBeNull();
+      const related = (await loadDesignPage(source, 'sugar'))?.related ?? [];
+      expect(related.map((d) => d.slug)).not.toContain('hidden-design');
+    }
+  });
+
+  it('builds design pages for published designs only', async () => {
+    expect(await designSlugs(raw)).toEqual(['rose', 'grad', 'sugar']);
+  });
+
+  it('works with the real content', async () => {
+    const real = getRepositories();
+    const gallery = await loadGallery(real);
+    expect(gallery.designs).toHaveLength(16);
+    expect(gallery.designs.every((d) => d.isPublished)).toBe(true);
+    expect(await designSlugs(real)).toHaveLength(16);
+    for (const slug of await designSlugs(real)) {
+      const page = await loadDesignPage(real, slug);
+      expect(page?.related.length).toBeGreaterThan(0);
+      expect(page?.related.every((d) => d.isPublished && d.slug !== slug)).toBe(true);
+    }
+  });
+});
+
+describe('whatsappOrderUrl with several lines', () => {
+  it('keeps line breaks, at most one empty line in a row', () => {
+    const url = whatsappOrderUrl('962788890049', ' Hello \r\n\r\n\r\n\r\nLa   Porta\nCake ', {
+      multiline: true,
+    });
+    expect(url).toBe('https://wa.me/962788890049?text=Hello%0A%0ALa%20Porta%0ACake');
+    expect(new URL(url).searchParams.get('text')).toBe('Hello\n\nLa Porta\nCake');
+  });
+
+  it('removes control characters and keeps the link to one parameter', () => {
+    const url = new URL(
+      whatsappOrderUrl('962788890049', `a${String.fromCharCode(0)}b\n&text=x#y`, {
+        multiline: true,
+      }),
+    );
+    expect([...url.searchParams.keys()]).toEqual(['text']);
+    expect(url.searchParams.get('text')).toBe('a b\n&text=x#y');
+    expect(url.hash).toBe('');
   });
 });

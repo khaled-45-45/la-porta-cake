@@ -27,6 +27,8 @@ describe('routes', () => {
     expect(routes.category('sweets')).toBe('/shop/sweets');
     expect(routes.product('lotus-cake')).toBe('/products/lotus-cake');
     expect(routes.design('rose-cake')).toBe('/our-work/rose-cake');
+    expect(routes.customOrderFor('rose-cake')).toBe('/custom-order?design=rose-cake');
+    expect(routes.customOrderFor('a&b=c#d')).toBe('/custom-order?design=a%26b%3Dc%23d');
     expect(MAIN_NAV.map((i) => i.key)).toEqual([
       'shop',
       'customOrder',

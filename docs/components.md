@@ -4,7 +4,7 @@ Inventory of the storefront's reusable components (Phases 3 and 4). Each compone
 
 Rules that apply to all of them:
 
-- Server components by default. The only client components are those that hold state: `LanguageSwitcher`, `MainNav`, `MobileMenu`, `CatalogBrowser`, `DesignGallery`.
+- Server components by default. The only client components are those that hold state: `LanguageSwitcher`, `MainNav`, `MobileMenu`, `CatalogBrowser`, `DesignGallery`, `CustomOrderForm`.
 - No component reads content files. Data comes from the repositories (`getRepositories()` in `@/lib/data`) and is passed in as props. A lint rule enforces this.
 - Presentation rules live in `src/lib`, not in components: visibility and price (`lib/catalog.ts`, server only), filtering (`lib/filters.ts`), routes (`lib/routes.ts`), formatting (`lib/format.ts`).
 - Browser code imports only types from `@la-porta/domain`, plus the zod-free entries `@la-porta/domain/locale` and `@la-porta/domain/search`. A lint rule and the bundle check in `pnpm test:routes` enforce this.
@@ -56,10 +56,17 @@ Rules that apply to all of them:
 
 | Component | Purpose |
 |---|---|
-| `DesignCard` | Photo, decoration type, title, occasion tags, "I want one like this". Draws nothing for unpublished designs or non-public photos |
+| `DesignCard` | Photo, decoration type, title (linking to the design's page), occasion tags, "I want one like this" (the custom-order form with this design). Draws nothing for unpublished designs or non-public photos |
 | `OccasionTags` | Occasion and "Mini" tags |
 | `DesignGallery` | Client: decoration and occasion filters, "Mini cakes only", live count, empty state. The filter bar is sticky from 640px only |
 | `WorkGallery` | Server entry point: keeps public designs, renders the cards, hands them to `DesignGallery` |
+
+## Custom orders (`components/custom-order`, Phase 6)
+
+| Component | Purpose |
+|---|---|
+| `ChosenDesign` | Server: the chosen gallery design beside the form (photo, title, decoration, "choose another", "no design"). Rendered by the page and handed to the form, which hides it if the design is no longer published |
+| `CustomOrderForm` | Client: the inquiry form. Controlled fields with visible labels, hints and character counts tied to each control; posts to the server action (works without JavaScript); shows a focused error summary with links to the fields, or the prepared message as text with "Open WhatsApp". Says the message is not sent yet and that the shop confirms in the chat |
 
 ## Filters (`components/filters`) and shared (`components/shared`)
 
@@ -85,6 +92,7 @@ Pending images, unpublished designs, inactive products and internal fields must 
 - `pnpm test:routes`: browser bundles contain no zod, schemas or `DATA_SOURCE`; the image optimizer and the static file server refuse private files, including traversal and malformed paths.
 - `pnpm test:routes` (Phase 5): every storefront page in both languages (home, shop, each category, each product) is fetched from the production build. The HTML and the decoded React Server Components payload (`self.__next_f`) are searched for private paths, internal field names (`isPublished`, `isActive`, `sourceAssetId`, `prepLeadHours`, …), the slugs and titles of every unpublished design, facet fields outside the lists above, and image URLs (`src`, `srcset`, preload hints) outside `/images/`. A self-test plants leaks in a fake page first, so a passing scan means something. Malformed paths (wrong case, extra segments, encoded traversal, script in the path, null byte) must answer 404 without reflecting markup, and every page, 404 and the root redirect must carry the security headers.
 - `lib/storefront.test.ts`: the page loaders never return inactive products, unpublished designs or pending photos, both with a correct repository and with a deliberately faulty one that returns every stored record unfiltered.
+- Phase 6: `client-props.test.tsx` checks that `CustomOrderForm` receives the design as its slug only, with plain option lists, and no design at all for an unpublished reference. `lib/custom-order.test.ts` checks the server side with a faulty repository: unpublished, unknown and malformed references are dropped, the link is built from the store settings whatever is posted, and errors are sentences without validation internals. `pnpm test:routes` adds the gallery, every design page and the form page in both languages to the scan, tampered `?design=` values (unpublished, unknown, repeated, upper case, traversal, markup, URLs), 404s for unknown and unpublished designs, and posts to the form without JavaScript: valid, invalid, an unpublished design, markup and link characters, a tampered language, another site's `Origin`, and a body over the limit.
 
 ## Pages (`components/pages`, `app/[locale]`, Phase 5)
 
@@ -96,6 +104,9 @@ Each route is a thin server component: it loads data through a loader in `lib/st
 | `/[locale]/shop` | `ShopView` | Every public product with search, section chips and "Ready only"; availability legend |
 | `/[locale]/shop/[category]` | `CategoryView` | Breadcrumbs, description, WhatsApp question, section links; `flavour-wall` categories use the searchable grid, `menu-list` categories the availability menu |
 | `/[locale]/products/[slug]` | `ProductView` | Breadcrumbs, photo or placeholder, category, availability, description, lead time (made-to-order items), sizes table (only when sizes are recorded), price or "Price on request", WhatsApp and Instagram, related products |
+| `/[locale]/our-work` | `GalleryView` | Phase 6. Breadcrumbs, the three kinds of decoration, every published design with decoration, occasion and "Mini" filters, empty state, custom-order band |
+| `/[locale]/our-work/[slug]` | `DesignView` | Phase 6. Breadcrumbs, photo, title, decoration type, occasions, "I want one like this", up to four related designs (same decoration first, then a shared occasion). Built ahead for published designs only |
+| `/[locale]/custom-order` | `CustomOrderView` | Phase 6. Rendered per request. What happens (a WhatsApp message, no payment), the chosen design from `?design=` (re-checked as published), the inquiry form (decision 0013) |
 
 Content decisions, made from the data only (decision 0005):
 
@@ -105,12 +116,20 @@ Content decisions, made from the data only (decision 0005):
 - Sizes, servings, prices, ingredients and storage: none are recorded yet, so the prototype's sizes table and accordions are left out and prices read "Price on request".
 - The WhatsApp order message is localized and carries the product name: "مرحبا لابورتا، بدي أطلب: {name}" / "Hello La Porta, I’d like to order: {name}".
 
-Left out until their target pages exist (Phase 6): the prototype's custom-order steps, occasion circles and "see all our work" links, the flavour page's "custom design" band and the shop's gallery banner. The design cards' own "I want one like this" buttons and the header's links to pages not built yet still lead to "page not found" until then.
+Phase 6 content decisions, from the data only:
+
+- Gallery search: not added. Design titles are short names, and the decoration, occasion and "Mini" filters already narrow sixteen designs to a few; search can be added with the shared Arabic-aware matcher if the gallery grows.
+- The prototype's decoration comparison table is left out: its rows (notice needed, prices) are not confirmed.
+- A design records no price, size or flavour, so its page states none; the custom-order form asks for flavour as free text and offers no sizes.
+
+Still left out: the prototype's occasion circles and "see all our work" links on the home page, the flavour page's "custom design" band and the shop's gallery banner. The header's links to About, FAQ and Contact lead to "page not found" until those pages are built.
 
 ## Security headers
 
-`next.config.ts` sends `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that turns off camera, microphone, location, payment, USB and topics, and a Content-Security-Policy limited to `frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'`. The CSP does not restrict scripts or styles, so it works with static pages; a script policy needs per-request nonces and is planned for Phase 7.
+`next.config.ts` sends `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that turns off camera, microphone, location, payment, USB and topics, and a Content-Security-Policy limited to `frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'`. The CSP does not restrict scripts or styles, so it works with static pages; a script policy needs per-request nonces and is planned for Phase 7. The site therefore does not have a complete script and style CSP yet.
+
+The custom-order server action (Phase 6) is accepted only from the site's own pages (Next.js compares `Origin` with `Host`), its request body is limited to 32 KB (`experimental.serverActions.bodySizeLimit`), and it stores and sends nothing.
 
 ## Routes
 
-Links use the route plan in `lib/routes.ts` (blueprint section 8): `/shop`, `/shop/[category]`, `/products/[slug]`, `/our-work`, `/our-work/[slug]`, `/custom-order`, `/about`, `/faq`, `/contact`. Phase 5 built the shop, category and product pages; the others arrive in Phase 6 and show the localized "page not found" until then.
+Links use the route plan in `lib/routes.ts` (blueprint section 8): `/shop`, `/shop/[category]`, `/products/[slug]`, `/our-work`, `/our-work/[slug]`, `/custom-order`, `/about`, `/faq`, `/contact`. Phase 5 built the shop, category and product pages; Phase 6 the gallery, design and custom-order pages (`routes.customOrderFor(slug)` adds `?design=`). About, FAQ and contact show the localized "page not found" until they are built.
